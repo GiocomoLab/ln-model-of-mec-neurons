@@ -1,18 +1,13 @@
 function [testFit,trainFit,param_mean] = fit_model_kfold_fmin(A,dt,spiketrain,filter,modelType)
 
 %% Description
-% This code will section the data into 10 different portions. Each portion
-% is drawn from across the entire recording session. It will then
+% This code will section the data into 10 different portions. It will then
 % fit the model to 9 sections, and test the model performance on the
 % remaining section. This procedure will be repeated 10 times, with all
-% possible unique testing sections. The fraction of variance explained, the
-% mean-squared error, the log-likelihood increase, and the mean square
-% error will be computed for each test data set. In addition, the learned
-% parameters will be recorded for each section.
+% possible unique testing sections. In addition, each section 
 
 
-%% Initialize matrices and section the data for 10-fold cross-validation
-
+%%%% WITH 5-FOLD CROSS VALIDATION %%%%%
 [~,numCol] = size(A);
 repeat = 10;
 sections = repeat*5;
@@ -25,7 +20,6 @@ testFit = nan(repeat,6); % var ex, correlation, llh increase, mse, # of spikes, 
 trainFit = nan(repeat,6); % var ex, correlation, llh increase, mse, # of spikes, length of train data
 paramMat = nan(repeat,numCol);
 
-%% perform the 10-fold cross validation
 for k = 1:repeat
     
     % get test data from edges - each test data chunk comes from entire session

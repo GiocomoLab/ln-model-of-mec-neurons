@@ -53,27 +53,27 @@ n_dir_bins = 18;
 n_speed_bins = 10;
 n_theta_bins = 18;
 
-% compute the speed of the animal and remove times when the animal
-% ran > 50 cm/s (these data points may contain artifacts)
-[speedgrid,speedVec,speed] = speed_map(posx_c,posy_c,n_speed_bins);
-too_fast = find(speed >= 50);
-posx(too_fast) = []; posy(too_fast) = []; posx2(too_fast) = []; posy2(too_fast) = [];
-posx_c(too_fast) = []; posy_c(too_fast) = []; speed(too_fast) = []; speedgrid(too_fast,:) = [];
-
 % compute position matrix
 [posgrid, posVec] = pos_map([posx_c posy_c], n_pos_bins, boxSize);
 
 % compute head direction matrix
 [hdgrid,hdVec,direction] = hd_map(posx,posx2,posy,posy2,n_dir_bins);
 
+% compute speed matrix
+[speedgrid,speedVec,speed] = speed_map(posx_c,posy_c,n_speed_bins);
+
 % compute theta matrix
 [thetagrid,thetaVec,phase] = theta_map(filt_eeg,post,sampleRate,n_theta_bins);
 
-% take out times when the animal ran >= 50 cm/s
-thetagrid(too_fast,:) = []; phase(too_fast) = []; spiketrain(too_fast) = [];
+% remove times when the animal ran > 50 cm/s (these data points may contain artifacts)
+too_fast = find(speed >= 50);
+posgrid(too_fast,:) = []; hdgrid(too_fast,:) = []; 
+speedgrid(too_fast,:) = []; thetagrid(too_fast,:) = [];
+spiketrain(too_fast) = [];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Fit all 15 LN models
+
 modelNum = 15;
 testFit_all = cell(modelNum,1);
 trainFit_all = cell(modelNum,1);
@@ -101,15 +101,21 @@ A{13} = hdgrid; modelType{13} = [0 1 0 0];
 A{14} = speedgrid; modelType{14} = [0 0 1 0];
 A{15} = thetagrid; modelType{15} = [0 0 0 1];
 
-% smooth firing rate
-filter = gaussmf(-4:4,[2 0]); filter = filter/sum(filter); %smooth over 100 ms
-dt = (post(3)-post(2)); fr = spiketrain/dt;
-smooth_fr = conv(fr,filter,'same'); %returns vector same size as original
+% compute a filter, which will be used to smooth the firing rate
+filter = gaussmf(-4:4,[2 0]); filter = filter/sum(filter); 
+dt = post(3)-post(2); fr = spiketrain/dt;
+smooth_fr = conv(fr,filter,'same');
 
 for n = 1:modelNum
     [testFit_all{n},trainFit_all{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n});
-    
 end
+
+%% Compute the firing-rate tuning curves
+
+% take out times when the animal ran >= 50 cm/s
+phase(too_fast) = []; 
+posx(too_fast) = []; posy(too_fast) = []; posx2(too_fast) = []; posy2(too_fast) = [];
+posx_c(too_fast) = []; posy_c(too_fast) = []; speed(too_fast) = [];
 
 % null parameters
 [rateMap] = computeRateMap(posx_c,posy_c,smooth_fr);
