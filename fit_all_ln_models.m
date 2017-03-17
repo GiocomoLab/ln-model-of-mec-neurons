@@ -1,48 +1,7 @@
 %% Description
-
-% This will fit 15 LN models to the spike train of a single cell. Each
-% model uses information about position, head direction, running speed,
-% theta phase, or some combination thereof, to predict a section of the
-% spike train. Model fitting and model performance is computed through
-% 10-fold cross-validation, and the minimization procedure is carried out
-% through fminunc. Once all models are fit, a forward-search procedure is
-% implemented to find the simplest 'best' model describing this spike
-% train. The forward-search procedure can be embedded into the
-% model-fitting procedure; we don't do that here for clarity
-
 % The model: r = exp(W*theta), where r is the predicted # of spikes, W is a
 % matrix of one-hot vectors describing variable (P, H, S, or T) values, and
 % theta is the learned vector of parameters.
-
-% In addition, this code will compute the tuning curves for position, head
-% direction, running speed, and theta phase
-
-% Code as implemented in Hardcastle, Maheswaranthan, Ganguli, Giocomo,
-% Neuron 2017
-% V1: Kiah Hardcastle, March 16, 2017
-
-
-%% clear the workspace
-
-clear all; close all; clc
-
-%% load the data
-
-load data_for_cell77
-
-% description of variables included:
-% boxSize = length (in cm) of one side of the square box
-% post = vector of time (seconds) at every 20 ms time bin
-% spiketrain = vector of the # of spikes in each 20 ms time bin
-% posx = x-position of left LED every 20 ms
-% posx2 = x-position of right LED every 20 ms
-% posx_c = x-position in middle of LEDs
-% posy = y-position of left LED every 20 ms
-% posy2 = y-posiiton of right LED every 20 ms
-% posy_c = y-position in middle of LEDs
-% filt_eeg = local field potential, filtered for theta frequency (4-12 Hz)
-% eeg_sample_rate = sample rate of filt_eeg
-
 
 %% compute the position, head direction, speed, and theta phase matrices
 
@@ -71,7 +30,7 @@ posgrid(too_fast,:) = []; hdgrid(too_fast,:) = [];
 speedgrid(too_fast,:) = []; thetagrid(too_fast,:) = [];
 spiketrain(too_fast) = [];
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% Fit all 15 LN models
 
 modelNum = 15;
@@ -109,20 +68,4 @@ smooth_fr = conv(fr,filter,'same');
 for n = 1:modelNum
     [testFit_all{n},trainFit_all{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n});
 end
-
-%% Compute the firing-rate tuning curves
-
-% take out times when the animal ran >= 50 cm/s
-phase(too_fast) = []; 
-posx(too_fast) = []; posy(too_fast) = []; posx2(too_fast) = []; posy2(too_fast) = [];
-posx_c(too_fast) = []; posy_c(too_fast) = []; speed(too_fast) = [];
-
-% compute tuning curves for position, head direction, speed, and theta phase
-[pos_curve] = compute_2d_tuning_curve(posx_c,posy_c,smooth_fr,n_pos_bins,0,boxSize);
-[hd_curve] = compute_1d_tuning_curve(direction,smooth_fr,n_dir_bins,0,2*pi);
-[spd_curve] = compute_1d_tuning_curve(direction,smooth_fr,n_speed_bins,0,50);
-[theta_curve] = compute_1d_tuning_curve(phase,fr,n_theta_bins,0,2*pi);
-
-
-%% Identify the simplest, highest-performing model
 
