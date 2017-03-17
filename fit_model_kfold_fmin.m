@@ -71,8 +71,8 @@ for k = 1:repeat
     % compute llh increase from "mean firing rate model" - NO SMOOTHING
     r = exp(test_A * param); n = test_spikes; meanFR_test = nanmean(test_spikes); 
     
-    log_llh_test_model = nansum(r-n.*log(r)+log(gamma(n+1)))/sum(n); %note: log(gamma(n+1)) will be unstable if n is large (which it isn't here)
-    log_llh_test_mean = nansum(meanFR_test-n.*log(meanFR_test)+log(gamma(n+1)))/sum(n);
+    log_llh_test_model = nansum(r-n.*log2(r)+log2(factorial(n)))/sum(n); %note: log(gamma(n+1)) will be unstable if n is large (which it isn't here)
+    log_llh_test_mean = nansum(meanFR_test-n.*log2(meanFR_test)+log2(factorial(n)))/sum(n);
     log_llh_test = (-log_llh_test_model + log_llh_test_mean);
     
     % compute MSE
