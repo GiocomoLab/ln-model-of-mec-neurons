@@ -4,7 +4,7 @@
 iter = 10;
 LLH_all = nan(iter,15);
 for m = 1:15
-    temp = log2(exp(1))*testFit{m}(:,3); % change from nats to bits
+    temp = testFit_all{m}(:,3); % change from nats to bits
     LLH_all(:,m) = temp;
 end
 
