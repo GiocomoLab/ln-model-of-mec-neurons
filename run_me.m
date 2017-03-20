@@ -23,6 +23,7 @@ clear all; close all; clc
 
 % load the data
 load data_for_cell77
+sampleRate = 50;      % sampling rate of neural data and behavioral variables is 50Hz
 
 % description of variables included:
 % boxSize = length (in cm) of one side of the square box
