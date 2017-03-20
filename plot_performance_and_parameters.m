@@ -7,22 +7,7 @@
 % pos / hd / speed / theta /  pos & hd / pos&spd / pos&th/ hd&spd / hd&theta / spd&theta /
 % pos&hd&spd / pos&hd&th / pos&spd&th / hd&spd&th / full
 
-newOrder = [12 13 14 15 6 7 8 9 10 11 2 3 4 5 1];
-figure(1)
-subplot(3,4,9:12)
-errorbar(LLH_increase(k,newOrder,1),LLH_increase(k,newOrder,2),'ok','linewidth',3)
-hold on
-plot(LLH_increase(k,newOrder,1),'or','linewidth',3)
-plot(0.5:15.5,zeros(16,1),'--b','linewidth',2)
-hold off
-box off
-set(gca,'fontsize',20)
-set(gca,'XLim',[0 16]); set(gca,'XTick',[1:15])
-set(gca,'XTickLabel',{'P','H','S','T','PH','PS','PT','HS',...
-    'HT','ST','PHS','PHT','PST','HST','PHST'});
-
 % plot the null and glm features
-param = paramMat{k}{1};
 pos_ind = 1:n_pos_bins; pos_param = param(pos_ind);
 hd_ind = n_pos_bins+1:n_pos_bins+n_dir_bins; hd_param = param(hd_ind);
 spd_ind = n_pos_bins+n_dir_bins+1:n_pos_bins+n_dir_bins+n_speed_bins;
@@ -40,11 +25,20 @@ hd_param = scale_factor_hd*exp(hd_param);
 speed_param = scale_factor_spd*exp(speed_param);
 theta_param = scale_factor_theta*exp(theta_param);
 
-null_param= paramNullMat(k,:);
-null_grid_param = null_param(pos_ind);
-null_HD_param = null_param(hd_ind);
-null_speed_param = null_param(spd_ind);
-null_th_param = null_param(th_ind);
+newOrder = [12 13 14 15 6 7 8 9 10 11 2 3 4 5 1];
+figure(1)
+subplot(3,4,9:12)
+errorbar(LLH_increase(k,newOrder,1),LLH_increase(k,newOrder,2),'ok','linewidth',3)
+hold on
+plot(LLH_increase(k,newOrder,1),'or','linewidth',3)
+plot(0.5:15.5,zeros(16,1),'--b','linewidth',2)
+hold off
+box off
+set(gca,'fontsize',20)
+set(gca,'XLim',[0 16]); set(gca,'XTick',[1:15])
+set(gca,'XTickLabel',{'P','H','S','T','PH','PS','PT','HS',...
+    'HT','ST','PHS','PHT','PST','HST','PHST'});
+
 
 maxVal_pos = min([max(pos_param) max(null_grid_param)]);
 maxVal_pos = maxVal_pos - 0.1*maxVal_pos;
