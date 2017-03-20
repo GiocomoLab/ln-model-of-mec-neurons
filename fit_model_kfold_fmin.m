@@ -14,24 +14,25 @@ function [testFit,trainFit,param_mean] = fit_model_kfold_fmin(A,dt,spiketrain,fi
 %% Initialize matrices and section the data for 10-fold cross-validation
 
 [~,numCol] = size(A);
-repeat = 10;
-sections = repeat*5;
+num_folds = 10;
+sections = num_folds*5;
 
-% divide the data up into 5*repeat pieces
+% divide the data up into 5*num_folds pieces
 edges = round(linspace(1,numel(spiketrain)+1,sections+1));
 
 % initialize matrices
-testFit = nan(repeat,6); % var ex, correlation, llh increase, mse, # of spikes, length of test data
-trainFit = nan(repeat,6); % var ex, correlation, llh increase, mse, # of spikes, length of train data
-paramMat = nan(repeat,numCol);
+testFit = nan(num_folds,6); % var ex, correlation, llh increase, mse, # of spikes, length of test data
+trainFit = nan(num_folds,6); % var ex, correlation, llh increase, mse, # of spikes, length of train data
+paramMat = nan(num_folds,numCol);
 
-%% perform the 10-fold cross validation
-for k = 1:repeat
+%% perform k-fold cross validation
+for k = 1:num_folds
+    fprintf('\t\t- Cross validation fold %d of %d\n', k, num_folds);
     
     % get test data from edges - each test data chunk comes from entire session
-    test_ind  = [edges(k):edges(k+1)-1 edges(k+repeat):edges(k+repeat+1)-1 ...
-        edges(k+2*repeat):edges(k+2*repeat+1)-1 edges(k+3*repeat):edges(k+3*repeat+1)-1 ...
-        edges(k+4*repeat):edges(k+4*repeat+1)-1]   ;
+    test_ind  = [edges(k):edges(k+1)-1 edges(k+num_folds):edges(k+num_folds+1)-1 ...
+        edges(k+2*num_folds):edges(k+2*num_folds+1)-1 edges(k+3*num_folds):edges(k+3*num_folds+1)-1 ...
+        edges(k+4*num_folds):edges(k+4*num_folds+1)-1]   ;
     
     test_spikes = spiketrain(test_ind); %test spiking
     smooth_spikes_test = conv(test_spikes,filter,'same'); %returns vector same size as original

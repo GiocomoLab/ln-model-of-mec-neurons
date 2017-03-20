@@ -39,17 +39,17 @@ sampleRate = 50;      % sampling rate of neural data and behavioral variables is
 % eeg_sample_rate = sample rate of filt_eeg
 
 %% fit the model
-
+fprintf('(1/4) Fitting all linear-nonlinear (LN) models\n')
 fit_all_ln_models
 
 %% find the simplest model that best describes the spike train
-
+fprintf('(2/4) Performing forward model selection\n')
 select_best_model
 
 %% Compute the firing-rate tuning curves
-
+fprintf('(3/4) Computing tuning curves\n')
 compute_all_tuning_curves
 
 %% plot the results
-
+fprintf('(4/4) Plotting performance and parameters\n') 
 plot_performance_and_parameters
