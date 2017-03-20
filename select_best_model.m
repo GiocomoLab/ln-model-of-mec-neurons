@@ -1,3 +1,31 @@
+% temp_test is a 15x1 cell - 15 because there are 15 models
+% temp_test{i} is a 10x6 matrix - 10 b/c of 10 folds - 3rd column is
+% LLH increase, 1st is var exp, 2nd is correlation coeff
+iter = 10;
+LLH_all = nan(iter,15);
+for m = 1:15
+    temp = testFit_all{m}(:,3); % change from nats to bits
+    LLH_all(:,m) = temp;
+end
+
+% plot the null and glm features
+n_pos_bins = 400; n_dir_bins = 18; n_speed_bins = 10; n_theta_bins = 18;
+pos_ind = 1:n_pos_bins; pos_param = param(pos_ind);
+hd_ind = n_pos_bins+1:n_pos_bins+n_dir_bins; hd_param = param(hd_ind);
+spd_ind = n_pos_bins+n_dir_bins+1:n_pos_bins+n_dir_bins+n_speed_bins;
+speed_param = param(spd_ind);
+th_ind = numel(param)-n_theta_bins+1:numel(param);
+theta_param = param(th_ind);
+
+scale_factor_pos = mean(exp(speed_param))*mean(exp(hd_param))*mean(exp(theta_param))*50;
+scale_factor_hd = mean(exp(speed_param))*mean(exp(pos_param))*mean(exp(theta_param))*50;
+scale_factor_spd = mean(exp(pos_param))*mean(exp(hd_param))*mean(exp(theta_param))*50;
+scale_factor_theta = mean(exp(speed_param))*mean(exp(hd_param))*mean(exp(pos_param))*50;
+
+pos_param = scale_factor_pos*exp(pos_param);
+hd_param = scale_factor_hd*exp(hd_param);
+speed_param = scale_factor_spd*exp(speed_param);
+theta_param = scale_factor_theta*exp(theta_param);
 %% FIND THE BEST MODEL
 
 % the model indexing scheme I am using:
@@ -67,5 +95,10 @@ if p_llh_12 < 0.05 % double model is sig. better
         selected_model = top2; %double model
     end
 else
+<<<<<<< HEAD
     selected_model = top1; %single model
 end
+=======
+    cellType = top1; %single model
+end
+>>>>>>> a572f83f37524517cfc869538da26296a40c2d86

@@ -66,6 +66,7 @@ dt = post(3)-post(2); fr = spiketrain/dt;
 smooth_fr = conv(fr,filter,'same');
 
 for n = 1:modelNum
+    fprintf('\t- Fitting model %d of %d\n', n, modelNum);
     [testFit_all{n},trainFit_all{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n});
 end
 

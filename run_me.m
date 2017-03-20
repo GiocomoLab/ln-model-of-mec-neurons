@@ -23,6 +23,7 @@ clear all; close all; clc
 
 % load the data
 load data_for_cell77
+sampleRate = 50;      % sampling rate of neural data and behavioral variables is 50Hz
 
 % description of variables included:
 % boxSize = length (in cm) of one side of the square box
@@ -38,17 +39,17 @@ load data_for_cell77
 % eeg_sample_rate = sample rate of filt_eeg
 
 %% fit the model
-
+fprintf('(1/4) Fitting all linear-nonlinear (LN) models\n')
 fit_all_ln_models
 
 %% find the simplest model that best describes the spike train
-
+fprintf('(2/4) Performing forward model selection\n')
 select_best_model
 
 %% Compute the firing-rate tuning curves
-
+fprintf('(3/4) Computing tuning curves\n')
 compute_all_tuning_curves
 
 %% plot the results
-
+fprintf('(4/4) Plotting performance and parameters\n') 
 plot_performance_and_parameters
