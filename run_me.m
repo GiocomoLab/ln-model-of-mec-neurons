@@ -23,7 +23,6 @@ clear all; close all; clc
 
 % load the data
 load data_for_cell77
-sampleRate = 50;      % sampling rate of neural data and behavioral variables is 50Hz
 
 % description of variables included:
 % boxSize = length (in cm) of one side of the square box
@@ -36,7 +35,8 @@ sampleRate = 50;      % sampling rate of neural data and behavioral variables is
 % posy2 = y-posiiton of right LED every 20 ms
 % posy_c = y-position in middle of LEDs
 % filt_eeg = local field potential, filtered for theta frequency (4-12 Hz)
-% eeg_sample_rate = sample rate of filt_eeg
+% eeg_sample_rate = sample rate of filt_eeg (250 Hz)
+% sampleRate = sampling rate of neural data and behavioral variable (50Hz)
 
 %% fit the model
 fprintf('(1/4) Fitting all linear-nonlinear (LN) models\n')

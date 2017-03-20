@@ -4,12 +4,11 @@
 iter = 10;
 LLH_all = nan(iter,15);
 for m = 1:15
-    temp = testFit_all{m}(:,3); % change from nats to bits
+    temp = testFit{m}(:,3); % change from nats to bits
     LLH_all(:,m) = temp;
 end
 
 % plot the null and glm features
-n_pos_bins = 400; n_dir_bins = 18; n_speed_bins = 10; n_theta_bins = 18;
 pos_ind = 1:n_pos_bins; pos_param = param(pos_ind);
 hd_ind = n_pos_bins+1:n_pos_bins+n_dir_bins; hd_param = param(hd_ind);
 spd_ind = n_pos_bins+n_dir_bins+1:n_pos_bins+n_dir_bins+n_speed_bins;
@@ -95,10 +94,6 @@ if p_llh_12 < 0.05 % double model is sig. better
         selected_model = top2; %double model
     end
 else
-<<<<<<< HEAD
     selected_model = top1; %single model
 end
-=======
-    cellType = top1; %single model
-end
->>>>>>> a572f83f37524517cfc869538da26296a40c2d86
+

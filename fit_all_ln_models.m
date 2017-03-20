@@ -34,8 +34,8 @@ spiketrain(too_fast) = [];
 %% Fit all 15 LN models
 
 modelNum = 15;
-testFit_all = cell(modelNum,1);
-trainFit_all = cell(modelNum,1);
+testFit = cell(modelNum,1);
+trainFit = cell(modelNum,1);
 param = cell(modelNum,1);
 A = cell(modelNum,1);
 modelType = cell(modelNum,1);
@@ -67,6 +67,6 @@ smooth_fr = conv(fr,filter,'same');
 
 for n = 1:modelNum
     fprintf('\t- Fitting model %d of %d\n', n, modelNum);
-    [testFit_all{n},trainFit_all{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n});
+    [testFit{n},trainFit{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n});
 end
 
