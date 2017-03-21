@@ -1,4 +1,4 @@
-function [testFit,trainFit,param_mean] = fit_model_kfold_fmin(A,dt,spiketrain,filter,modelType,numFolds)
+function [testFit,trainFit,param_mean] = fit_model(A,dt,spiketrain,filter,modelType,numFolds)
 
 %% Description
 % This code will section the data into 10 different portions. Each portion
@@ -53,7 +53,7 @@ for k = 1:numFolds
     else
         init_param = param;
     end
-    [param] = fminunc(@(param) poissglm_allModels_fmin(param,data,modelType),init_param,opts);
+    [param] = fminunc(@(param) ln_poisson_model(param,data,modelType),init_param,opts);
     
     %%%%%%%%%%%%% TEST DATA %%%%%%%%%%%%%%%%%%%%%%%
     % compute the firing rate

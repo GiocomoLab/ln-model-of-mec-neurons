@@ -70,6 +70,6 @@ numFolds = 10;
 
 for n = 1:modelNum
     fprintf('\t- Fitting model %d of %d\n', n, modelNum);
-    [testFit{n},trainFit{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n},numFolds);
+    [testFit{n},trainFit{n},param{n}] = fit_model(A{n},dt,spiketrain,filter,modelType{n},numFolds);
 end
 

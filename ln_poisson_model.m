@@ -1,4 +1,4 @@
-function [f, df, hessian] = poissglm_allModels_fmin(param,data,modelType)
+function [f, df, hessian] = ln_poisson_model(param,data,modelType)
 
 X = data{1}; % subset of A
 Y = data{2}; % number of spikes
