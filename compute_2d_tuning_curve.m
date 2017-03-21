@@ -14,19 +14,19 @@ tuning_curve = zeros(numBin,numBin);
 %% fill out the tuning curve
 
 % find the mean firing rate in each position bin
-for i  = 1:numBins-1
+for i  = 1:numBin-1
     start_x = xAxis(i); stop_x = xAxis(i+1);
     % find the times the animal was in the bin
-    if i == numBins-1
+    if i == numBin-1
         x_ind = find(variable_x >= start_x & variable_x <= stop_x);
     else
         x_ind = find(variable_x >= start_x & variable_x < stop_x);
     end
-    for j = 1:numBins-1
+    for j = 1:numBin-1
         
         start_y = yAxis(j); stop_y = yAxis(j+1);
         
-        if j == numBins-1
+        if j == numBin-1
             y_ind = find(variable_y >= start_y & variable_y <= stop_y);
         else
             y_ind = find(variable_y >= start_y & variable_y < stop_y);

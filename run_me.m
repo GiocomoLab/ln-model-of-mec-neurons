@@ -23,6 +23,7 @@
 clear all; close all; clc
 
 % load the data
+fprintf('(1/5) Loading data from example cell \n')
 load data_for_cell77
 
 % description of variables included:
@@ -40,17 +41,17 @@ load data_for_cell77
 % sampleRate = sampling rate of neural data and behavioral variable (50Hz)
 
 %% fit the model
-fprintf('(1/4) Fitting all linear-nonlinear (LN) models\n')
+fprintf('(2/5) Fitting all linear-nonlinear (LN) models\n')
 fit_all_ln_models
 
 %% find the simplest model that best describes the spike train
-fprintf('(2/4) Performing forward model selection\n')
+fprintf('(3/5) Performing forward model selection\n')
 select_best_model
 
 %% Compute the firing-rate tuning curves
-fprintf('(3/4) Computing tuning curves\n')
+fprintf('(4/5) Computing tuning curves\n')
 compute_all_tuning_curves
 
 %% plot the results
-fprintf('(4/4) Plotting performance and parameters\n') 
+fprintf('(5/5) Plotting performance and parameters\n') 
 plot_performance_and_parameters

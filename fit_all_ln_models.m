@@ -33,12 +33,12 @@ spiketrain(too_fast) = [];
 
 %% Fit all 15 LN models
 
-modelNum = 15;
-testFit = cell(modelNum,1);
-trainFit = cell(modelNum,1);
-param = cell(modelNum,1);
-A = cell(modelNum,1);
-modelType = cell(modelNum,1);
+numModels = 15;
+testFit = cell(numModels,1);
+trainFit = cell(numModels,1);
+param = cell(numModels,1);
+A = cell(numModels,1);
+modelType = cell(numModels,1);
 
 % ALL VARIABLES
 A{1} = [ posgrid hdgrid speedgrid thetagrid]; modelType{1} = [1 1 1 1];
@@ -68,8 +68,8 @@ smooth_fr = conv(fr,filter,'same');
 % compute the number of folds we would like to do
 numFolds = 10;
 
-for n = 1:modelNum
-    fprintf('\t- Fitting model %d of %d\n', n, modelNum);
+for n = 1:numModels
+    fprintf('\t- Fitting model %d of %d\n', n, numModels);
     [testFit{n},trainFit{n},param{n}] = fit_model(A{n},dt,spiketrain,filter,modelType{n},numFolds);
 end
 
