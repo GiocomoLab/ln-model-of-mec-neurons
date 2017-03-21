@@ -1,6 +1,7 @@
+%%%%%%% compute all of the tuning curves %%%%%%%%%
 
 % take out times when the animal ran >= 50 cm/s
-phase(too_fast) = []; 
+phase(too_fast) = [];
 posx(too_fast) = []; posy(too_fast) = []; posx2(too_fast) = []; posy2(too_fast) = [];
 posx_c(too_fast) = []; posy_c(too_fast) = []; speed(too_fast) = [];
 

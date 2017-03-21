@@ -65,8 +65,11 @@ filter = gaussmf(-4:4,[2 0]); filter = filter/sum(filter);
 dt = post(3)-post(2); fr = spiketrain/dt;
 smooth_fr = conv(fr,filter,'same');
 
+% compute the number of folds we would like to do
+numFolds = 10;
+
 for n = 1:modelNum
     fprintf('\t- Fitting model %d of %d\n', n, modelNum);
-    [testFit{n},trainFit{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n});
+    [testFit{n},trainFit{n},param{n}] = fit_model_kfold_fmin(A{n},dt,spiketrain,filter,modelType{n},numFolds);
 end
 

@@ -1,4 +1,4 @@
-function [testFit,trainFit,param_mean] = fit_model_kfold_fmin(A,dt,spiketrain,filter,modelType)
+function [testFit,trainFit,param_mean] = fit_model_kfold_fmin(A,dt,spiketrain,filter,modelType,numFolds)
 
 %% Description
 % This code will section the data into 10 different portions. Each portion
@@ -11,28 +11,27 @@ function [testFit,trainFit,param_mean] = fit_model_kfold_fmin(A,dt,spiketrain,fi
 % parameters will be recorded for each section.
 
 
-%% Initialize matrices and section the data for 10-fold cross-validation
+%% Initialize matrices and section the data for k-fold cross-validation
 
 [~,numCol] = size(A);
-num_folds = 10;
-sections = num_folds*5;
+sections = numFolds*5;
 
 % divide the data up into 5*num_folds pieces
 edges = round(linspace(1,numel(spiketrain)+1,sections+1));
 
 % initialize matrices
-testFit = nan(num_folds,6); % var ex, correlation, llh increase, mse, # of spikes, length of test data
-trainFit = nan(num_folds,6); % var ex, correlation, llh increase, mse, # of spikes, length of train data
-paramMat = nan(num_folds,numCol);
+testFit = nan(numFolds,6); % var ex, correlation, llh increase, mse, # of spikes, length of test data
+trainFit = nan(numFolds,6); % var ex, correlation, llh increase, mse, # of spikes, length of train data
+paramMat = nan(numFolds,numCol);
 
 %% perform k-fold cross validation
-for k = 1:num_folds
-    fprintf('\t\t- Cross validation fold %d of %d\n', k, num_folds);
+for k = 1:numFolds
+    fprintf('\t\t- Cross validation fold %d of %d\n', k, numFolds);
     
     % get test data from edges - each test data chunk comes from entire session
-    test_ind  = [edges(k):edges(k+1)-1 edges(k+num_folds):edges(k+num_folds+1)-1 ...
-        edges(k+2*num_folds):edges(k+2*num_folds+1)-1 edges(k+3*num_folds):edges(k+3*num_folds+1)-1 ...
-        edges(k+4*num_folds):edges(k+4*num_folds+1)-1]   ;
+    test_ind  = [edges(k):edges(k+1)-1 edges(k+numFolds):edges(k+numFolds+1)-1 ...
+        edges(k+2*numFolds):edges(k+2*numFolds+1)-1 edges(k+3*numFolds):edges(k+3*numFolds+1)-1 ...
+        edges(k+4*numFolds):edges(k+4*numFolds+1)-1]   ;
     
     test_spikes = spiketrain(test_ind); %test spiking
     smooth_spikes_test = conv(test_spikes,filter,'same'); %returns vector same size as original

@@ -1,16 +1,17 @@
 %% Description of run_me
 
-% This script is segmented into three parts. In the first, the data (an
-% example cell) is loaded. In the second, 15 LN models are fit to the
+% This script is segmented into several parts. First, the data (an
+% example cell) is loaded. Then, 15 LN models are fit to the
 % cell's spike train. Each model uses information about 
 % position, head direction, running speed, theta phase,
 % or some combination thereof, to predict a section of the
 % spike train. Model fitting and model performance is computed through
 % 10-fold cross-validation, and the minimization procedure is carried out
-% through fminunc. In the third part, a forward-search procedure is
+% through fminunc. Next, a forward-search procedure is
 % implemented to find the simplest 'best' model describing this spike
-% train. In addition, the model-derived response profiles, and the firing
-% rate tuning curves, are plotted alongside the model performances.
+% train. Following this, the firing rate tuning curves are computed, and
+% these - along with the model-derived response profiles and the model
+% performance and results of the selection procedure are plotted.
 
 % Code as implemented in Hardcastle, Maheswaranthan, Ganguli, Giocomo,
 % Neuron 2017

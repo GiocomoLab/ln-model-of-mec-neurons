@@ -1,11 +1,10 @@
 %% FIND THE BEST MODEL
 
-% the model indexing scheme I am using:
+% the model indexing scheme:
 % phst, phs, pht, pst, hst, ph, ps, pt, hs, ht, st, p,  h,  s,  t
 % 1      2    3    4    5    6  7   8   9   10  11  12  13  14  15
 
 testFit_mat = cell2mat(testFit);
-numFolds = length(testFit_mat)/numModels;
 LLH_values = reshape(testFit_mat(:,3),numFolds,numModels);
 
 % find the best single model
