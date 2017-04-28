@@ -83,3 +83,10 @@ if p_llh_12 < 0.05 % double model is sig. better
 else
     selected_model = top1; %single model
 end
+
+% re-set if selected model is not above baseline
+pval_baseline = signrank(LLH_values(:,selected_model),[],'tail','right');
+
+if pval_baseline > 0.05
+    selected_model = NaN;
+end
