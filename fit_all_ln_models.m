@@ -68,10 +68,7 @@ smooth_fr = conv(fr,filter,'same');
 % compute the number of folds we would like to do
 numFolds = 10;
 
-%for n = 1:numModels
-for n = 2
+for n = 1:numModels
     fprintf('\t- Fitting model %d of %d\n', n, numModels);
     [testFit{n},trainFit{n},param{n}] = fit_model(A{n},dt,spiketrain,filter,modelType{n},numFolds);
 end
-
-keyboard
