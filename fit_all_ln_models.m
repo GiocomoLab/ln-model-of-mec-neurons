@@ -22,7 +22,7 @@ n_theta_bins = 18;
 [speedgrid,speedVec,speed] = speed_map(posx_c,posy_c,n_speed_bins);
 
 % compute theta matrix
-[thetagrid,thetaVec,phase] = theta_map(filt_eeg,post,sampleRate,n_theta_bins);
+[thetagrid,thetaVec,phase] = theta_map(filt_eeg,post,eeg_sample_rate,n_theta_bins);
 
 % remove times when the animal ran > 50 cm/s (these data points may contain artifacts)
 too_fast = find(speed >= 50);
