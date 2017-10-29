@@ -96,8 +96,8 @@ for k = 1:numFolds
     
     % compute log-likelihood
     r_train = exp(train_A * param); n_train = train_spikes; meanFR_train = nanmean(train_spikes);   
-    log_llh_train_model = nansum(r_train-n_train.*log(r_train)+log(gamma(n_train+1)))/sum(n_train);
-    log_llh_train_mean = nansum(meanFR_train-n_train.*log(meanFR_train)+log(gamma(n_train+1)))/sum(n_train);
+    log_llh_train_model = nansum(r_train-n_train.*log2(r_train)+log(gamma(n_train+1)))/sum(n_train);
+    log_llh_train_mean = nansum(meanFR_train-n_train.*log2(meanFR_train)+log(gamma(n_train+1)))/sum(n_train);
     log_llh_train = (-log_llh_train_model + log_llh_train_mean);
     
     % compute MSE

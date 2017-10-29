@@ -47,6 +47,8 @@ speed_param = param_full_model(n_pos_bins^2+n_dir_bins+1:n_pos_bins^2+n_dir_bins
 theta_param = param_full_model(numel(param_full_model)-n_theta_bins+1:numel(param_full_model));
 
 % compute the scale factors
+% NOTE: technically, to compute the precise scale factor, the expectation
+% of each parameter should be calculated, not the mean.
 scale_factor_pos = mean(exp(speed_param))*mean(exp(hd_param))*mean(exp(theta_param))*50;
 scale_factor_hd = mean(exp(speed_param))*mean(exp(pos_param))*mean(exp(theta_param))*50;
 scale_factor_spd = mean(exp(pos_param))*mean(exp(hd_param))*mean(exp(theta_param))*50;

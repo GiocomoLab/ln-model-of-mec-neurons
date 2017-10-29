@@ -45,6 +45,7 @@ if ~isempty(param_theta)
 end
 
 %% compute f, the gradient, and the hessian 
+
 f = sum(rate-Y.*u) + J_pos + J_hd + J_spd + J_theta;
 df = real(X' * (rate - Y) + [J_pos_g; J_hd_g; J_spd_g; J_theta_g]);
 hessian = hessian_glm + blkdiag(J_pos_h,J_hd_h,J_spd_h,J_theta_h);
