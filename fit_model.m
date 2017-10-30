@@ -71,9 +71,10 @@ for k = 1:numFolds
     % compute llh increase from "mean firing rate model" - NO SMOOTHING
     r = exp(test_A * param); n = test_spikes; meanFR_test = nanmean(test_spikes); 
     
-    log_llh_test_model = nansum(r-n.*log2(r)+log2(factorial(n)))/sum(n); %note: log(gamma(n+1)) will be unstable if n is large (which it isn't here)
-    log_llh_test_mean = nansum(meanFR_test-n.*log2(meanFR_test)+log2(factorial(n)))/sum(n);
+    log_llh_test_model = nansum(r-n.*log(r)+log(factorial(n)))/sum(n); %note: log(gamma(n+1)) will be unstable if n is large (which it isn't here)
+    log_llh_test_mean = nansum(meanFR_test-n.*log(meanFR_test)+log(factorial(n)))/sum(n);
     log_llh_test = (-log_llh_test_model + log_llh_test_mean);
+    log_llh_test = log(2)*log_llh_test;
     
     % compute MSE
     mse_test = nanmean((smooth_fr_hat_test-smooth_fr_test).^2);
@@ -96,9 +97,10 @@ for k = 1:numFolds
     
     % compute log-likelihood
     r_train = exp(train_A * param); n_train = train_spikes; meanFR_train = nanmean(train_spikes);   
-    log_llh_train_model = nansum(r_train-n_train.*log2(r_train)+log2(factorial(n_train)))/sum(n_train);
-    log_llh_train_mean = nansum(meanFR_train-n_train.*log2(meanFR_train)+log2(factorial(n_train)))/sum(n_train);
+    log_llh_train_model = nansum(r_train-n_train.*log(r_train)+log(factorial(n_train)))/sum(n_train);
+    log_llh_train_mean = nansum(meanFR_train-n_train.*log(meanFR_train)+log(factorial(n_train)))/sum(n_train);
     log_llh_train = (-log_llh_train_model + log_llh_train_mean);
+    log_llh_train = log(2)*log_llh_train;
     
     % compute MSE
     mse_train = nanmean((smooth_fr_hat_train-smooth_fr_train).^2);
