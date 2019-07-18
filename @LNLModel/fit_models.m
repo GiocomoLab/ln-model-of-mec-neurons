@@ -4,6 +4,10 @@
 %   W => matrix of one-hot vectors describing variables (P, H, S, T)
 %   θ => the learned vector of parameters
 %
+% Syntax:
+%   [testFit, trainFit, param] = self.fit_models()
+%   [testFit, trainFit, param] = self.fit_models('Name', Value, ...)
+%
 % Arguments:
 %   self: an instance of the linear-nonlinear model class
 %   varargin: options (see below)
