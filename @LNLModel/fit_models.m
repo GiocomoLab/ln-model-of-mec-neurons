@@ -76,9 +76,11 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
 
   % compute a filter, which will be used to smooth the firing rate
   % TODO: mess with this filter
-  filter = gaussmf(-4:4,[2 0]); filter = filter/sum(filter);
-  dt = post(3)-post(2); fr = spiketrain/dt;
-  smooth_fr = conv(fr,filter,'same');
+  % filter = gaussmf(-4:4,[2 0]); filter = filter/sum(filter);
+  % dt = post(3)-post(2); fr = spiketrain/dt;
+  % smooth_fr = conv(fr,filter,'same');
+
+  [smooth_firing_rate, firing_rate, dt, filter] = self.get_filtered_firing_rate(spiketrain, 'hardcastle')
 
   for n = 1:self.n_models
       corelib.verb(self.verbosity, 'INFO', ['Fitting model ' num2str(n) ' of ' num2str(self.n_models)])
