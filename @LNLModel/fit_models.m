@@ -16,6 +16,8 @@
 %   trainFit
 %   param
 
+% TODO: make this function respond to n dependent variables, rather than all
+
 function [testFit, trainFit, param] = fit_models(self, varargin)
 
   % optional arguments
