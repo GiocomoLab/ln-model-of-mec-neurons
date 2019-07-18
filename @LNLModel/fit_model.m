@@ -53,7 +53,7 @@ function [testFit,trainFit,param_mean] = fit_model(A,dt,spiketrain,filter,modelT
         else
             init_param = param;
         end
-        [param] = fminunc(@(param) ln_poisson_model(param,data,modelType),init_param,opts);
+        [param] = fminunc(@(param) LNLModel.ln_poisson_model(param,data,modelType),init_param,opts);
 
         %%%%%%%%%%%%% TEST DATA %%%%%%%%%%%%%%%%%%%%%%%
         % compute the firing rate
