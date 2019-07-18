@@ -17,3 +17,5 @@ function fit_models(self, varargin)
   options.n_theta_bins  = 18;
 
   corelib.parseNameValueArguments(options, varargin{:});
+
+  
