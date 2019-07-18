@@ -17,6 +17,8 @@ properties
   sampleRate        % sampling rate of neural data and behavioral variable (50Hz)
   n_folds = 10      % the 'k' in k-fold cross-validation
   vars = 'PSTH';    % which variables to treat as the dependents?
+  alpha = 0.05;     % the significance threshold for p-value tests
+  verbosity = true; % how much informative text should be printed?
 
 end % properties
 
