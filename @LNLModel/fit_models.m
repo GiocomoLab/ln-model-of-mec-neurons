@@ -81,6 +81,6 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
   smooth_fr = conv(fr,filter,'same');
 
   for n = 1:self.n_models
-      fprintf('\t- Fitting model %d of %d\n', n, self.n_models);
+      corelib.verb(self.verbosity, 'INFO', ['Fitting model ' num2str(n) ' of ' num2str(self.n_models)])
       [testFit{n}, trainFit{n}, param{n}] = LNLModel.fit_model(A{n}, dt, spiketrain, filter, modelType{n}, self.n_folds);
   end
