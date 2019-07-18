@@ -25,6 +25,7 @@ properties (SetAccess = protected)
   n_models = 15     % number of models
 
 end % properties setaccess protected
+
 methods
 
   function self = LNLModel(root, cel)
@@ -46,7 +47,6 @@ methods
     self.filt_eeg = filt_eeg;
     self.eeg_sample_rate = eeg_sample_rate;
     self.sample_rate = sample_rate;
-
   end % constructor
 
 end % methods
