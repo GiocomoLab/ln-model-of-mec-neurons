@@ -48,13 +48,11 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
   spiketrain(too_fast)  = [];
 
   % fit all 15 linear-nonlinear models
-
-  numModels = 15;
-  testFit = cell(numModels,1);
-  trainFit = cell(numModels,1);
-  param = cell(numModels,1);
-  A = cell(numModels,1);
-  modelType = cell(numModels,1);
+  testFit = cell(self.n_models,1);
+  trainFit = cell(self.n_models,1);
+  param = cell(self.n_models,1);
+  A = cell(self.n_models,1);
+  modelType = cell(self.n_models,1);
 
   % ALL VARIABLES
   A{1} = [ posgrid hdgrid speedgrid thetagrid]; modelType{1} = [1 1 1 1];
@@ -82,7 +80,7 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
   dt = post(3)-post(2); fr = spiketrain/dt;
   smooth_fr = conv(fr,filter,'same');
 
-  for n = 1:numModels
-      fprintf('\t- Fitting model %d of %d\n', n, numModels);
+  for n = 1:self.n_models
+      fprintf('\t- Fitting model %d of %d\n', n, self.n_models);
       [testFit{n}, trainFit{n}, param{n}] = LNLModel.fit_model(A{n}, dt, spiketrain, filter, modelType{n}, self.n_folds);
   end
