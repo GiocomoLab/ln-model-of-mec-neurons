@@ -19,6 +19,7 @@ properties
   vars = 'PSTH';    % which variables to treat as the dependents?
   alpha = 0.05;     % the significance threshold for p-value tests
   verbosity = true; % how much informative text should be printed?
+  baseline = 0;     % use median "baseline" of 0 unless otherwise noted, determines significance
 
 end % properties
 
