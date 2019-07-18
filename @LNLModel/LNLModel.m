@@ -46,7 +46,11 @@ end % methods
 
 methods (Static)
 
-[boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel);
+  [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel);
+  [posgrid, bins] = pos_map(pos, nbins, boxSize)
+  [hdgrid,hdVec,direction] = hd_map(posx,posx2,posy,posy2,n_dir_bins)
+  [speedgrid,speedVec,speed] = speed_map(posx_c,posy_c,n_speed_bins)
+  [thetagrid,thetaVec,phase] = theta_map(filt_eeg,post,eeg_sample_rate,n_theta_bins)
 
 end % static methods
 
