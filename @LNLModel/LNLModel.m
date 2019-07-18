@@ -49,6 +49,27 @@ methods
     self.sample_rate = sample_rate;
   end % constructor
 
+  function set.vars(self, value)
+    assert(ischar(value), 'vars must be a character vector')
+    assert(length(value) <= 4, 'vars must be a vector of length 4 or less')
+    assert(isvector(value), 'vars must be a vector')
+    % confirm that each character is allowed
+    for ii = 1:length(value)
+      if isempty(any(strfind('ptsh', lower(value(ii)))))
+        error('unknown variable (legal variables are ''PTSH'')')
+      end
+    end
+    % all tests passed, save the variable
+    len = length(value);
+    self.vars = value;
+    % update the n_models property as well
+    c = 0;
+    for ii = 1:len
+      c = c + nchoosek(len, ii);
+    end
+    self.n_models = c;
+  end % set.vars
+
 end % methods
 
 methods (Static)
