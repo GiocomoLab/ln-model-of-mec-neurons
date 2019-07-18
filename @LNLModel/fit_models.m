@@ -82,5 +82,5 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
 
   for n = 1:numModels
       fprintf('\t- Fitting model %d of %d\n', n, numModels);
-      [testFit{n}, trainFit{n}, param{n}] = LNLModel.fit_model(A{n}, dt, spiketrain, filter, modelType{n}, options.n_folds);
+      [testFit{n}, trainFit{n}, param{n}] = LNLModel.fit_model(A{n}, dt, spiketrain, filter, modelType{n}, self.n_folds);
   end
