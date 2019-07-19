@@ -1,4 +1,4 @@
-function [testFit,trainFit,param_mean] = fit_model(self, A, dt, spiketrain, filter, modelType, numFolds)
+function [testFit,trainFit,param_mean] = fit_model(verbosity, A, dt, spiketrain, filter, modelType, numFolds)
 
     %% Description
     % This code will section the data into 10 different portions. Each portion
@@ -26,7 +26,7 @@ function [testFit,trainFit,param_mean] = fit_model(self, A, dt, spiketrain, filt
 
     %% perform k-fold cross validation
     for k = 1:numFolds
-        corelib.verb(self.verbosity, 'INFO', ['cross-validation fold ' numstr(k) ' of ' numstr(numfolds)])
+        corelib.verb(verbosity, 'INFO', ['cross-validation fold ' numstr(k) ' of ' numstr(numfolds)])
 
         % get test data from edges - each test data chunk comes from entire session
         test_ind  = [edges(k):edges(k+1)-1 edges(k+numFolds):edges(k+numFolds+1)-1 ...
