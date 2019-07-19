@@ -6,6 +6,8 @@
 % Arguments:
 %   root: a root object created bythe CMBHOME package
 %   cel: index of cell number and tetrode number as a 1x2 matrix
+%   n_spikes: the number of spikes requested (randomly deletes spikes until this many are left)
+%     defaults to the total number of spikes (no shuffling/deletion)
 % Outputs:
 %   boxSize           => length (in cm) of one side of the square box
 %   post              => vector of time (seconds) at every 20 ms time bin
@@ -20,7 +22,9 @@
 %   eeg_sample_rate   => sample rate of filt_eeg (250 Hz)
 %   sampleRate        => sampling rate of neural data and behavioral variable (50Hz)
 
-function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel)
+function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
+
+  root.cel = cel;
 
   post      = root.ts; % time steps
   posx_c    = root.sx; % central x-position
@@ -30,21 +34,27 @@ function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, 
   posy_c    = posy_c - min(posy_c);
 
   % spike times
-  spktimes  = get_spktimes_of_cel(root, cel)
-  % number of spikes
-  nmbr_spikes = length(spktimes);
+  spktimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
 
   if length(spktimes) < nmbr_spikes
     error('number of spikes and length of spike times don''t agree')
   end
 
   % shuffle the spikes
-  p = randperm(length(spktimes), nmbr_spikes);
-  spikes    = sort(spktimes(p));
+  if ~isempty(n_spikes)
+    n_spikes = length(spktimes);
+  end
+
+  assert(n_spikes <= length(spktimes), 'too many spikes requested')
+
+  if n_spikes < length(spktimes)
+    p = randperm(length(spktimes), nmbr_spikes);
+    spktimes = sort(spktimes(p));
+  end
 
   % get the spike train (125-ms Gaussian filter)
-  [real_fr, ~] = get_InstFR(spktimes, post, root.fs_video, 'filter_length', 125, 'filter_type', 'Gauss');
-  [smooth_fr,spiketrain] = get_InstFR(spikes,post,root.fs_video,'filter_length',125,'filter_type','Gauss');
+  % [real_fr, ~] = get_InstFR(spktimes, post, root.fs_video, 'filter_length', 125, 'filter_type', 'Gauss');
+  [~,spiketrain] = get_InstFR(spktimes, post, root.fs_video, 'filter_length', 125, 'filter_type', 'Gauss');
 
   % get the EEG recording
   boxSize = 100;
