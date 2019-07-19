@@ -15,11 +15,14 @@ function [theta_grid,phaseVec,phase_time] = theta_map(self, nbins)
     theta_grid = zeros(length(self.post),nbins);
     phaseVec = 2*pi/nbins/2:2*pi/nbins:2*pi-2*pi/nbins/2;
 
-    for i = 1:numel(self.post)
-
-        % figure out the theta index
-        [~, idx] = min(abs(phase_time(i)-phaseVec));
-        theta_grid(i,idx) = 1;
+    for i = 1:numel(self.post)-1
+        try
+            % figure out the theta index
+            [~, idx] = min(abs(phase_time(i)-phaseVec));
+            theta_grid(i,idx) = 1;
+        catch
+            keyboard
+        end
 
     end
 
