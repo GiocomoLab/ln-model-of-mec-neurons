@@ -62,7 +62,7 @@ theta_response = scale_factor_theta*exp(theta_param);
 
 % plot the model-derived response profiles
 subplot(3,4,5)
-imagesc(reshape(pos_response,20,20)); axis off; 
+imagesc(reshape(pos_response,20,20)); axis off;
 subplot(3,4,6)
 plot(hd_vector,hd_response,'k','linewidth',3)
 xlabel('direction angle')
@@ -121,5 +121,3 @@ set(gca,'XLim',[0 16]); set(gca,'XTick',1:15)
 set(gca,'XTickLabel',{'PHST','PHS','PHT','PST','HST','PH','PS','PT','HS',...
     'HT','ST','P','H','S','T'});
 legend('Model performance','Selected model','Baseline')
-   
-

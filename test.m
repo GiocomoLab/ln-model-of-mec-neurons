@@ -21,4 +21,6 @@ selected_model = LNLModel.select_model(testFit);
 
 % compute tuning curves
 smooth_firing_rate = ln.get_filtered_firing_rate(LNLModel.get_filter('hardcastle'));
-[pos_curve, hd_curve, speed_curve, theta_curve] = ln.compute_tuning_curves(smooth_firing_rate);
+
+% plot
+ln.plot(param, smooth_firing_rate);
