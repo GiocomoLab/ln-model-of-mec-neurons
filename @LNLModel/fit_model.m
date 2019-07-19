@@ -26,7 +26,7 @@ function [testFit,trainFit,param_mean] = fit_model(verbosity, A, dt, spiketrain,
 
     %% perform k-fold cross validation
     for k = 1:numFolds
-        corelib.verb(verbosity, 'INFO', ['cross-validation fold ' numstr(k) ' of ' numstr(numfolds)])
+        corelib.verb(verbosity, 'INFO', ['cross-validation fold ' num2str(k) ' of ' num2str(numfolds)])
 
         % get test data from edges - each test data chunk comes from entire session
         test_ind  = [edges(k):edges(k+1)-1 edges(k+numFolds):edges(k+numFolds+1)-1 ...
