@@ -44,14 +44,6 @@ function [outputs] = unpackRoot(root, cel, varargin)
 
   % spike times
   spiketimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
-  % get the spike train without filtering, but with binning
-  outputs.spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
-
-  % head direction
-  outputs.sheaddir  = root.sheaddir;
-
-  % speed
-  outputs.speed     = root.svel;
 
   % shuffle the spikes
   if isempty(options.n_spikes)
@@ -60,10 +52,19 @@ function [outputs] = unpackRoot(root, cel, varargin)
 
   assert(options.n_spikes <= length(spiketimes), 'too many spikes requested')
 
-  if n_spikes < length(spiketimes)
+  if options.n_spikes < length(spiketimes)
     p = randperm(length(spiketimes), options.n_spikes);
     spiketimes = sort(spiketimes(p));
   end
+
+  % get the spike train without filtering, but with binning
+  outputs.spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
+
+  % head direction
+  outputs.sheaddir  = root.sheaddir;
+
+  % speed
+  outputs.speed     = root.svel;
 
   % get the EEG recording
   outputs.box_size = 100; % cm
