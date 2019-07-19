@@ -43,8 +43,11 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
 
   % remove times when the animal ran > 50 cm/s (these may be artifacts)
   too_fast              = find(self.speed > 50);
-  posgrid(too_fast,:)   = []; hdgrid(too_fast,:) = [];
-  speedgrid(too_fast,:) = []; thetagrid(too_fast,:) = [];
+  posgrid(too_fast,:)   = [];
+  hdgrid(too_fast,:)    = [];
+  speedgrid(too_fast,:) = [];
+  thetagrid(too_fast,:) = [];
+  spiketrain = self.spiketrain;
   spiketrain(too_fast)  = [];
 
   % fit all 15 linear-nonlinear models
