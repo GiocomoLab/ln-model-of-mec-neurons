@@ -14,9 +14,10 @@ end % properties
 properties (SetAccess = protected)
 
   n_models = 15     % number of models
-  box_size           % length (in cm) of one side of the square box
+  box_size          % length (in cm) of one side of the square box
   spiketrain        % vector of the # of spikes in each 20 ms time bin
   sheaddir          % head direction angles in degrees from -180 to 180
+  speed             % animal speed in cm/s
   post              % vector of time (seconds) at every 20 ms time bin
   posx_c            % x-position in middle of LEDs
   posy_c            % y-position in middle of LEDs
