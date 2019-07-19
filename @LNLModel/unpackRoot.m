@@ -28,7 +28,6 @@
 function [outputs] = unpackRoot(root, cel, varargin)
   % options can be changed from defaults by calling the function with name-value arguments
   options.n_spikes  = []; % all spikes
-  options.max_speed = 50; % cm/s
 
   options = corelib.parseNameValueArguments(options, varargin{:});
 
@@ -66,9 +65,6 @@ function [outputs] = unpackRoot(root, cel, varargin)
   % speed
   outputs.speed     = root.svel;
 
-  % % animals can't move faster than 50 cm/s
-  % outputs.speed(outputs.speed > 50) = 50;
-
   % get the EEG recording
   outputs.box_size = 100; % cm
   outputs.eeg_sample_rate = 600; % Hz
@@ -79,6 +75,11 @@ function [outputs] = unpackRoot(root, cel, varargin)
   eeg_4800          = root.b_lfp(root.active_lfp).signal;
   eeg_600           = resample(eeg_4800, 600, 4800);
   outputs.filt_eeg  = CMBHOME.LFP.BandpassFilter(eeg_600, outputs.eeg_sample_rate, theta_freq_range);
+
+  % compute the theta phase
+  hilb_eeg          = hilbert(outputs.filt_eeg);
+  outputs.phase     = atan2(imag(hilb_eeg), real(hilb_eeg));
+  outputs.phase(outputs.phase < 0)  = outputs.phase(outputs.phase < 0) + 2*pi;
 
   % get the sample rate in seconds
   outputs.sample_rate = mean(diff(root.ts));
