@@ -1,4 +1,4 @@
-function [testFit,trainFit,param_mean] = fit_model(A,dt,spiketrain,filter,modelType,numFolds)
+function [testFit,trainFit,param_mean] = fit_model(self, A, dt, spiketrain, filter, modelType, numFolds)
 
     %% Description
     % This code will section the data into 10 different portions. Each portion
