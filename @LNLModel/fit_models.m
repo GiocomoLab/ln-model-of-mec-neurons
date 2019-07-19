@@ -74,9 +74,9 @@ function [testFit, trainFit, param] = fit_models(self)
   % dt = post(3)-post(2); fr = spiketrain/dt;
   % smooth_fr = conv(fr,filter,'same');
 
-  [smooth_firing_rate, firing_rate, dt, filter] = self.get_filtered_firing_rate(spiketrain, 'hardcastle');
 
   % parameters that need to be accessible by multiple workers
+  filter    = LNLModel.get_filter('hardcastle');
   verbosity = self.verbosity;
   n_folds   = self.n_folds;
   n_bins    = [self.bins.position, self.bins.head_direction, self.bins.speed, self.bins.theta];
