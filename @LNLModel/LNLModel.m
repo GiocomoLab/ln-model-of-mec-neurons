@@ -69,7 +69,7 @@ end % methods
 
 methods (Static)
 
-  [testFit, trainFit, param_mean] = fit_model(A, dt, spiketrain, filter, modelType, numFolds)
+  [testFit,trainFit,param_mean] = fit_model(verbosity, A, dt, spiketrain, filter, modelType, numFolds)
   [f, df, hessian] = ln_poisson_model(param,data,modelType)
   [outputs] = unpackRoot(root, cel, varargin)
   [selected_model] = select_model(self, testFit)
