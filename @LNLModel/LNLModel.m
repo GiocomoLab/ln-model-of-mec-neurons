@@ -21,7 +21,7 @@ properties (SetAccess = protected)
   posy_c            % y-position in middle of LEDs
   filt_eeg          % local field potential, filtered for theta frequency (4-12 Hz)
   eeg_sample_rate   % sample rate of filt_eeg (250 Hz)
-  sampleRate        % sampling rate of neural data and behavioral variable (50Hz)
+  sample_rate       % sampling rate of neural data and behavioral variable (50Hz)
 
 end % properties setaccess protected
 
