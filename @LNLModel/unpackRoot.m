@@ -66,6 +66,9 @@ function [outputs] = unpackRoot(root, cel, varargin)
   % speed
   outputs.speed     = root.svel;
 
+  % animals can't move faster than 50 cm/s
+  output.speed(output.speed > 50) = 50;
+
   % get the EEG recording
   outputs.box_size = 100; % cm
   outputs.eeg_sample_rate = 600; % Hz
