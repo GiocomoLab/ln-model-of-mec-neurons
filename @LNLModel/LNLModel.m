@@ -29,19 +29,14 @@ end % properties setaccess protected
 
 methods
 
-  function self = LNLModel(root, cel, n_spikes)
+  function self = LNLModel(root, cel, varargin)
     % constructor
     % Arguments:
     %   root: a root object created by CMBHOME
     %   cel: a 1x2 vector containing the cell and tetrode indices
-    %   n_spikes: optional argument; how many spikes to find as a 1x1 positive integer
+    %   varargin: name-value arguments into LNLModel.unpackRoot()
 
-    if exist('n_spikes', 'var')
-      [outputs] = LNLModel.unpackRoot(root, cel, n_spikes);
-    else
-      [outputs] = LNLModel.unpackRoot(root, cel);
-    end
-
+    [outputs] = LNLModel.unpackRoot(root, cel, varargin);
     output_list = fieldnames(outputs);
 
     for ii = 1:length(output_list)
@@ -76,7 +71,7 @@ methods (Static)
 
   [testFit, trainFit, param_mean] = fit_model(A, dt, spiketrain, filter, modelType, numFolds)
   [f, df, hessian] = ln_poisson_model(param,data,modelType)
-  [outputs] = unpackRoot(root, cel, n_spikes)
+  [outputs] = unpackRoot(root, cel, varargin)
   [selected_model] = select_model(self, testFit)
 
 end % static methods
