@@ -85,7 +85,9 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
 
   [smooth_firing_rate, firing_rate, dt, filter] = self.get_filtered_firing_rate(spiketrain, 'hardcastle')
 
-  for n = 1:self.n_models
+  parfor n = 1:self.n_models
       corelib.verb(self.verbosity, 'INFO', ['Fitting model ' num2str(n) ' of ' num2str(self.n_models)])
       [testFit{n}, trainFit{n}, param{n}] = LNLModel.fit_model(A{n}, dt, spiketrain, filter, modelType{n}, self.n_folds);
   end
+
+end % function
