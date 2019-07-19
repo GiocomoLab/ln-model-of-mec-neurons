@@ -10,13 +10,9 @@
 %     defaults to the total number of spikes (no shuffling/deletion)
 % Outputs:
 %   boxSize           => length (in cm) of one side of the square box
-%   post              => vector of time (seconds) at every 20 ms time bin
 %   spiketrain        => vector of the # of spikes in each 20 ms time bin
-%   posx              => x-position of left LED every 20 ms
-%   posx2             => x-position of right LED every 20 ms
+%   post              => vector of time (seconds) at every 20 ms time bin
 %   posx_c            => x-position in middle of LEDs
-%   posy              => y-position of left LED every 20 ms
-%   posy2             => y-posiiton of right LED every 20 ms
 %   posy_c            => y-position in middle of LEDs
 %   filt_eeg          => local field potential, filtered for theta frequency (4-12 Hz)
 %   eeg_sample_rate   => sample rate of filt_eeg (250 Hz)
@@ -53,13 +49,16 @@ function [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, 
 
   % get the EEG recording
   boxSize = 100;
-  eeg_sample_rate = 600;
-  theta_freq_range = [6, 10];
+  eeg_sample_rate = 600; % Hz
+  theta_freq_range = [6, 10]; % Hz
 
   % get the theta-filtered EEG recording
   root.active_lfp   = 1; % NOTE: this is some magic e-phys stuff I don't understand; just trust Holger
   eeg_4800          = root.b_lfp(root.active_lfp).signal;
   eeg_600           = resample(eeg_4800, 600, 4800);
   filt_eeg          = CMBHOME.LFP.BandpassFilter(eeg_600, eeg_sample_rate, theta_freq_range);
+
+  % get the sample rate in seconds
+  sample_rate       = mean(diff(root.ts));
 
 end % function
