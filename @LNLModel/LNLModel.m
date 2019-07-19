@@ -14,7 +14,7 @@ end % properties
 properties (SetAccess = protected)
 
   n_models = 15     % number of models
-  boxSize           % length (in cm) of one side of the square box
+  box_size           % length (in cm) of one side of the square box
   spiketrain        % vector of the # of spikes in each 20 ms time bin
   sheaddir          % head direction angles in degrees from -180 to 180
   post              % vector of time (seconds) at every 20 ms time bin
@@ -36,19 +36,16 @@ methods
     %   n_spikes: optional argument; how many spikes to find as a 1x1 positive integer
 
     if exist('n_spikes', 'var')
-      [boxSize, spiketrain, sheaddir, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = LNLModel.unpackRoot(root, cel, n_spikes);
+      [outputs] = LNLModel.unpackRoot(root, cel, n_spikes);
     else
-      [boxSize, spiketrain, sheaddir, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = LNLModel.unpackRoot(root, cel);
+      [outputs] = LNLModel.unpackRoot(root, cel);
     end
 
-    self.boxSize = boxSize;
-    self.spiketrain = spiketrain;
-    self.post = post;
-    self.posx_c = posx_c;
-    self.posy_c = posy_c;
-    self.filt_eeg = filt_eeg;
-    self.eeg_sample_rate = eeg_sample_rate;
-    self.sample_rate = sample_rate;
+    output_list = fieldnames(outputs);
+
+    for ii = 1:length(output_list)
+      self.(output_list{ii}) = outputs.(output_list{ii});
+    end
   end % constructor
 
   function set.vars(self, value)
@@ -78,7 +75,7 @@ methods (Static)
 
   [testFit, trainFit, param_mean] = fit_model(A, dt, spiketrain, filter, modelType, numFolds)
   [f, df, hessian] = ln_poisson_model(param,data,modelType)
-  [boxSize, spiketrain, sheaddir, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
+  [outputs] = unpackRoot(root, cel, n_spikes)
   [selected_model] = select_model(self, testFit)
 
 end % static methods

@@ -9,8 +9,10 @@
 %   n_spikes: the number of spikes requested (randomly deletes spikes until this many are left)
 %     defaults to the total number of spikes (no shuffling/deletion)
 % Outputs:
-%   boxSize           => length (in cm) of one side of the square box
+%   box_size           => length (in cm) of one side of the square box
 %   spiketrain        => vector of the # of spikes in each 20 ms time bin
+%   sheaddir          => vector of the head direction (degrees)
+%   speed             => magnitude of the animal speed (cm/s)
 %   post              => vector of time (seconds) at every 20 ms time bin
 %   posx_c            => x-position in middle of LEDs
 %   posy_c            => y-position in middle of LEDs
@@ -18,22 +20,25 @@
 %   eeg_sample_rate   => sample rate of filt_eeg (250 Hz)
 %   sampleRate        => sampling rate of neural data and behavioral variable (50Hz)
 
-function [boxSize, spiketrain, sheaddir, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
+function [outputs] = unpackRoot(root, cel, n_spikes)
 
+  outputs = struct;
   root.cel = cel;
 
-  post      = root.ts; % time steps
-  posx_c    = root.sx; % central x-position
-  posy_c    = root.sy; % central y-position
+  outputs.post      = root.ts; % time steps
+  outputs.posx_c    = root.sx; % central x-position
+  outputs.posy_c    = root.sy; % central y-position
   % let the position points start at (x, y) = (0, 0)
-  posx_c    = posx_c - min(posx_c);
-  posy_c    = posy_c - min(posy_c);
+  outputs.posx_c    = outputs.posx_c - min(outputs.posx_c);
+  outputs.posy_c    = outputs.posy_c - min(outputs.posy_c);
 
   % spike times
   spiketimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
+  % get the spike train without filtering, but with binning
+  outputs.spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
 
   % head direction
-  sheaddir    = root.sheaddir;
+  outputs.sheaddir    = root.sheaddir;
 
   % shuffle the spikes
   if ~exist('n_spikes', 'var')
@@ -47,21 +52,18 @@ function [boxSize, spiketrain, sheaddir, post, posx_c, posy_c, filt_eeg, eeg_sam
     spiketimes = sort(spiketimes(p));
   end
 
-  % get the spike train without filtering, but with binning
-  spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
-
   % get the EEG recording
-  boxSize = 100;
-  eeg_sample_rate = 600; % Hz
+  outputs.box_size = 100;
+  outputs.eeg_sample_rate = 600; % Hz
   theta_freq_range = [6, 10]; % Hz
 
   % get the theta-filtered EEG recording
   root.active_lfp   = 1; % NOTE: this is some magic e-phys stuff I don't understand; just trust Holger
   eeg_4800          = root.b_lfp(root.active_lfp).signal;
   eeg_600           = resample(eeg_4800, 600, 4800);
-  filt_eeg          = CMBHOME.LFP.BandpassFilter(eeg_600, eeg_sample_rate, theta_freq_range);
+  outputs.filt_eeg  = CMBHOME.LFP.BandpassFilter(eeg_600, outputs.eeg_sample_rate, theta_freq_range);
 
   % get the sample rate in seconds
-  sample_rate       = mean(diff(root.ts));
+  outputs.sample_rate = mean(diff(root.ts));
 
 end % function

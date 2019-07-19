@@ -3,7 +3,7 @@ function [posgrid, bins] = pos_map(self, nbins)
     % take the histogram
     pos = [self.posx_c self.posy_c];
 
-    bins = self.boxSize/nbins/2:self.boxSize/nbins:self.boxSize-self.boxSize/nbins/2;
+    bins = self.box_size/nbins/2:self.box_size/nbins:self.box_size-self.box_size/nbins/2;
 
     % store grid
     posgrid = zeros(length(pos), nbins^2);

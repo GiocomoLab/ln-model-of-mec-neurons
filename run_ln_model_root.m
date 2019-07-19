@@ -49,7 +49,7 @@ spikes = sort(spikes);
 [real_fr,~] = get_InstFR(spktimes,post,root.fs_video,'filter_length',125,'filter_type','Gauss');
 [smooth_fr,spiketrain] = get_InstFR(spikes,post,root.fs_video,'filter_length',125,'filter_type','Gauss');
 
-boxSize = 100;
+box_size = 100;
 eeg_sample_rate = 600;%250;
 theta_freq_range = [6 10];
 
@@ -62,7 +62,7 @@ eeg_600 = resample(eeg_4800,600,4800);
 filt_eeg = CMBHOME.LFP.BandpassFilter(eeg_600, eeg_sample_rate, theta_freq_range);
 
 % description of variables included:
-% boxSize = length (in cm) of one side of the square box
+% box_size = length (in cm) of one side of the square box
 % post = vector of time (seconds) at every 20 ms time bin
 % spiketrain = vector of the # of spikes in each 20 ms time bin
 % posx = x-position of left LED every 20 ms
