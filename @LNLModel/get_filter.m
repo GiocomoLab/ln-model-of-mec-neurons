@@ -8,4 +8,6 @@ function filter = get_filter(filter_name)
   case 'hardcastle'
     filter = gaussmf(-4:4, [2, 0]);
     filter = filter / sum(filter);
+  otherwise
+    error('unknown filter name')
   end
