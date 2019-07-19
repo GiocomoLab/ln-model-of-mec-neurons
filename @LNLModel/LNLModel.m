@@ -74,6 +74,7 @@ methods (Static)
   [f, df, hessian] = ln_poisson_model(param, data, modelType, n_bins)
   [outputs] = unpackRoot(root, cel, varargin)
   [selected_model] = select_model(self, testFit)
+  [filter] = get_filter(filter_name)
 
 end % static methods
 
