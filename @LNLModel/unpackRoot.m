@@ -36,7 +36,7 @@ function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, 
   % spike times
   spktimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
 
-  if length(spktimes) < nmbr_spikes
+  if length(spktimes) < n_spikes
     error('number of spikes and length of spike times don''t agree')
   end
 
@@ -48,7 +48,7 @@ function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, 
   assert(n_spikes <= length(spktimes), 'too many spikes requested')
 
   if n_spikes < length(spktimes)
-    p = randperm(length(spktimes), nmbr_spikes);
+    p = randperm(length(spktimes), n_spikes);
     spktimes = sort(spktimes(p));
   end
 
