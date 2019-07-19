@@ -4,27 +4,18 @@
 % Arguments:
 %   self: the LNLModel object
 %   spiketrain: the spike train (or peristimulus time histogram)
-%   filter_name: a character vector that defines which kind of filter to use
+%   filter: a normalized vector that is convolved with the spiketrain
 % Outputs:
 %   smooth_firing_rate: the firing rate smoothed by the filter
 %   firing_rate: the firing rate (spike train divided by dt)
-%   dt: the time step, computed from the timestamps
-%   filter: the filter as a normalized vector
 
-function [smooth_firing_rate, firing_rate, dt, filter] = get_filtered_firing_rate(self, spiketrain, filter_name)
+function [smooth_firing_rate, firing_rate] = get_filtered_firing_rate(self, spiketrain, filter)
 
-  if ~exist('filter_name', 'var')
-    filter_name = 'hardcastle';
+  if ~exist('filter', 'var')
+    filter = LNLModel.get_filter();
   end
 
-  dt = self.post(3) - self.post(2);
-  firing_rate = spiketrain / dt;
-
-  switch filter_name
-  case 'hardcastle'
-    filter = gaussmf(-4:4, [2, 0]);
-    filter = filter / sum(filter);
-  end
+  firing_rate = spiketrain * self.sample_rate;
 
   smooth_firing_rate = conv(firing_rate, filter, 'same');
 
