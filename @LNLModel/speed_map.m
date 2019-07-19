@@ -1,8 +1,8 @@
-function [speed_grid, speed_vec] = speed_map(self, nbins)
+function [speed_grid, speed_vec] = speed_map(self)
 
     %compute velocity
-    max_speed = 50; % cm/s
-    speed_vec = (max_speed / nbins / 2):(max_speed / nbins):(max_speed - max_speed / nbins / 2);
+    self.max_speed = 50; % cm/s
+    speed_vec = (self.max_speed / self.bins.speed / 2):(self.max_speed / self.bins.speed):(self.max_speed - self.max_speed / self.bins.speed / 2);
     speed_grid = zeros(length(self.posx_c), length(speed_vec));
 
     for ii = 1:numel(self.posx_c)

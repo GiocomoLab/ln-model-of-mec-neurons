@@ -18,37 +18,28 @@
 
 % TODO: make this function respond to n dependent variables, rather than all
 
-function [testFit, trainFit, param] = fit_models(self, varargin)
-
-  % optional arguments
-  options.n_pos_bins    = 20;
-  options.n_dir_bins    = 10;
-  options.n_speed_bins  = 10;
-  options.n_theta_bins  = 18;
-  options.n_folds       = 10;
-
-  options = corelib.parseNameValueArguments(options, varargin{:});
+function [testFit, trainFit, param] = fit_models(self)
 
   % compute position matrix
-  [posgrid, posVec] = self.pos_map(options.n_pos_bins);
+  [posgrid, posVec] = self.pos_map();
 
   % compute head direction matrix
-  [hdgrid, hdVec, direction] = self.hd_map(options.n_dir_bins);
+  [hdgrid, hdVec, direction] = self.hd_map();
 
   % compute speed matrix
-  [speedgrid, ~] = self.speed_map(options.n_speed_bins);
+  [speedgrid, ~] = self.speed_map();
 
   % compute theta matrix
-  [thetagrid, ~, ~] = self.theta_map(options.n_theta_bins);
+  [thetagrid, ~, ~] = self.theta_map();
 
   % remove times when the animal ran > 50 cm/s (these may be artifacts)
-  too_fast              = find(self.speed > 50);
-  posgrid(too_fast,:)   = [];
-  hdgrid(too_fast,:)    = [];
-  speedgrid(too_fast,:) = [];
-  thetagrid(too_fast,:) = [];
+  too_fast              = find(self.speed > self.max_speed);
+  posgrid(too_fast,:)   = self.max_speed;
+  hdgrid(too_fast,:)    = self.max_speed;
+  speedgrid(too_fast,:) = self.max_speed;
+  thetagrid(too_fast,:) = self.max_speed;
   spiketrain = self.spiketrain;
-  spiketrain(too_fast)  = [];
+  spiketrain(too_fast)  = self.max_speed;
 
   % fit all 15 linear-nonlinear models
   testFit = cell(self.n_models,1);
@@ -88,10 +79,13 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
   % parameters that need to be accessible by multiple workers
   verbosity = self.verbosity;
   n_folds   = self.n_folds;
+  n_bins    = [self.bins.position, self.bins.head_direction, self.bins.speed, self.bins.theta];
 
   for n = 1:self.n_models
       corelib.verb(self.verbosity, 'INFO', ['Fitting model ' num2str(n) ' of ' num2str(self.n_models)])
-      [testFit{n}, trainFit{n}, param{n}] = LNLModel.fit_model(verbosity, A{n}, dt, spiketrain, filter, modelType{n}, n_folds);
+      [testFit{n}, trainFit{n}, param{n}] = LNLModel.fit_model('verbosity', true, ...
+      'A', A{n}, 'dt', dt, 'spiketrain', spiketrain, 'filter', filter, 'modelType', ...
+      modelType{n}, 'numFolds', n_folds, 'n_bins', n_bins);
   end
 
 end % function

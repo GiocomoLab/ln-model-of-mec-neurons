@@ -14,7 +14,7 @@ load('~/Downloads/180827_S1_lightVSdarkness.mat');
 ln = LNLModel(root, [1, 1]);
 
 % test all of the models
-[testFit, trainFit, param] = ln.fit_models('n_pos_bins', 20, 'n_dir_bins', 10, 'n_speed_bins', 10, 'n_theta_bins', 18, 'n_folds', 10);
+[testFit, trainFit, param] = ln.fit_models();
 
 % select the best model
 selected_model = LNLModel.select_model(testFit);

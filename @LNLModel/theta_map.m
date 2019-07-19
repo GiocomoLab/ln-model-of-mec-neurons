@@ -1,4 +1,4 @@
-function [theta_grid,phaseVec,phase_time] = theta_map(self, nbins)
+function [theta_grid,phaseVec,phase_time] = theta_map(self)
 
     %compute instantaneous phase
     hilb_eeg = hilbert(self.filt_eeg); % compute hilbert transform
@@ -12,8 +12,8 @@ function [theta_grid,phaseVec,phase_time] = theta_map(self, nbins)
     phase_ind(phase_ind + 1>numel(self.filt_eeg)) = [];
     phase_time = phase(phase_ind+1); %gives phase of lfp at every time point
 
-    theta_grid = zeros(length(self.post),nbins);
-    phaseVec = 2*pi/nbins/2:2*pi/nbins:2*pi-2*pi/nbins/2;
+    theta_grid = zeros(length(self.post),self.bins.theta);
+    phaseVec = 2*pi/self.bins.theta/2:2*pi/self.bins.theta:2*pi-2*pi/self.bins.theta/2;
 
     for i = 1:numel(self.post)-1
         try
