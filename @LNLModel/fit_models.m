@@ -30,19 +30,19 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
   options = corelib.parseNameValueArguments(options, varargin{:});
 
   % compute position matrix
-  [posgrid, posVec]           = self.pos_map(options.n_pos_bins);
+  [posgrid, posVec] = self.pos_map(options.n_pos_bins);
 
   % compute head direction matrix
-  [hdgrid,hdVec,direction]    = self.hd_map(options.n_dir_bins);
+  [hdgrid, hdVec, direction] = self.hd_map(options.n_dir_bins);
 
   % compute speed matrix
-  [speedgrid,speedVec,speed]  = self.speed_map(options.n_speed_bins);
+  [speedgrid, ~] = self.speed_map(options.n_speed_bins);
 
   % compute theta matrix
-  [thetagrid,thetaVec,phase]  = self.theta_map(options.n_theta_bins);
+  [thetagrid, ~, ~] = self.theta_map(options.n_theta_bins);
 
   % remove times when the animal ran > 50 cm/s (these may be artifacts)
-  too_fast              = find(speed >= 50);
+  too_fast              = find(self.speed > 50);
   posgrid(too_fast,:)   = []; hdgrid(too_fast,:) = [];
   speedgrid(too_fast,:) = []; thetagrid(too_fast,:) = [];
   spiketrain(too_fast)  = [];
