@@ -3,13 +3,18 @@
 % and unpacks the variables needed for the Hardcastle model
 % this makes root objects able to be analyzed with the linear-nonlinear model
 %
+% Examples:
+%
+%   outputs = LNLModel.unpackRoot(root, cel)
+%   outputs = LNLModel.unpackRoot(root, cel, 'OptionName', OptionValue, ...)
+%
 % Arguments:
 %   root: a root object created bythe CMBHOME package
 %   cel: index of cell number and tetrode number as a 1x2 matrix
-%   n_spikes: the number of spikes requested (randomly deletes spikes until this many are left)
-%     defaults to the total number of spikes (no shuffling/deletion)
+%   varargin: options as name-value arguments
+%
 % Outputs:
-%   box_size           => length (in cm) of one side of the square box
+%   box_size          => length (in cm) of one side of the square box
 %   spiketrain        => vector of the # of spikes in each 20 ms time bin
 %   sheaddir          => vector of the head direction (degrees)
 %   speed             => magnitude of the animal speed (cm/s)
@@ -20,7 +25,12 @@
 %   eeg_sample_rate   => sample rate of filt_eeg (250 Hz)
 %   sampleRate        => sampling rate of neural data and behavioral variable (50Hz)
 
-function [outputs] = unpackRoot(root, cel, n_spikes)
+function [outputs] = unpackRoot(root, cel, varargin)
+  % options can be changed from defaults by calling the function with name-value arguments
+  options.n_spikes  = []; % all spikes
+  options.max_speed = 50; % cm/s
+
+  options = corelib.parseNameValueArguments(options, varargin{:});
 
   outputs = struct;
   root.cel = cel;
@@ -41,19 +51,19 @@ function [outputs] = unpackRoot(root, cel, n_spikes)
   outputs.sheaddir    = root.sheaddir;
 
   % shuffle the spikes
-  if ~exist('n_spikes', 'var')
-    n_spikes = length(spiketimes);
+  if isempty(options.n_spikes)
+    options.n_spikes = length(spiketimes);
   end
 
   assert(n_spikes <= length(spiketimes), 'too many spikes requested')
 
   if n_spikes < length(spiketimes)
-    p = randperm(length(spiketimes), n_spikes);
+    p = randperm(length(spiketimes), options.n_spikes);
     spiketimes = sort(spiketimes(p));
   end
 
   % get the EEG recording
-  outputs.box_size = 100;
+  outputs.box_size = 100; % cm
   outputs.eeg_sample_rate = 600; % Hz
   theta_freq_range = [6, 10]; % Hz
 
