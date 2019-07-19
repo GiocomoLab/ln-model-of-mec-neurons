@@ -58,7 +58,7 @@ function [outputs] = unpackRoot(root, cel, varargin)
     options.n_spikes = length(spiketimes);
   end
 
-  assert(n_spikes <= length(spiketimes), 'too many spikes requested')
+  assert(options.n_spikes <= length(outputs.spiketimes), 'too many spikes requested')
 
   if n_spikes < length(spiketimes)
     p = randperm(length(spiketimes), options.n_spikes);

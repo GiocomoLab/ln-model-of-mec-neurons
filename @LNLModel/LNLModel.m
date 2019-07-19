@@ -36,7 +36,7 @@ methods
     %   cel: a 1x2 vector containing the cell and tetrode indices
     %   varargin: name-value arguments into LNLModel.unpackRoot()
 
-    [outputs] = LNLModel.unpackRoot(root, cel, varargin);
+    [outputs] = LNLModel.unpackRoot(root, cel, varargin{:});
     output_list = fieldnames(outputs);
 
     for ii = 1:length(output_list)
