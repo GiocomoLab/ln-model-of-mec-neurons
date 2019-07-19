@@ -41,7 +41,7 @@ function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, 
   end
 
   % shuffle the spikes
-  if ~isempty(n_spikes)
+  if ~exist('n_spikes', 'var')
     n_spikes = length(spktimes);
   end
 
