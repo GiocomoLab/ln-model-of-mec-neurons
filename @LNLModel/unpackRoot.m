@@ -48,7 +48,10 @@ function [outputs] = unpackRoot(root, cel, varargin)
   outputs.spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
 
   % head direction
-  outputs.sheaddir    = root.sheaddir;
+  outputs.sheaddir  = root.sheaddir;
+
+  % speed
+  outputs.speed     = root.svel;
 
   % shuffle the spikes
   if isempty(options.n_spikes)
