@@ -82,6 +82,6 @@ function [outputs] = unpackRoot(root, cel, varargin)
   outputs.phase(outputs.phase < 0)  = outputs.phase(outputs.phase < 0) + 2*pi;
 
   % get the sample rate in seconds
-  outputs.sample_rate = mean(diff(root.ts));
+  outputs.sample_rate = 1/mean(diff(root.ts));
 
 end % function
