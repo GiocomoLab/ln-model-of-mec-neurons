@@ -27,13 +27,19 @@ end % properties setaccess protected
 
 methods
 
-  function self = LNLModel(root, cel)
+  function self = LNLModel(root, cel, n_spikes)
     % constructor
     % Arguments:
     %   root: a root object created by CMBHOME
     %   cel: a 1x2 vector containing the cell and tetrode indices
-    % TODO: allow n_spikes to change
-    [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel)
+    %   n_spikes: optional argument; how many spikes to find as a 1x1 positive integer
+
+    if exist('n_spikes', 'var')
+      [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = LNLModel.unpackRoot(root, cel, n_spikes);
+    else
+      [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = LNLModel.unpackRoot(root, cel);
+    end
+
     self.boxSize = boxSize;
     self.spiketrain = spiketrain;
     self.post = post;
@@ -72,6 +78,7 @@ methods (Static)
   [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel);
   [testFit, trainFit, param_mean] = fit_model(A, dt, spiketrain, filter, modelType, numFolds)
   [f, df, hessian] = ln_poisson_model(param,data,modelType)
+  [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
 
 end % static methods
 
