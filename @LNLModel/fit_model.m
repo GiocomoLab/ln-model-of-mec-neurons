@@ -29,6 +29,16 @@ function [testFit,trainFit,param_mean] = fit_model(varargin)
         assert(~isempty(options.(option_names{ii})), [option_names{ii} ' cannot be empty'])
     end
 
+    verbosity = options.verbosity;
+    A = options.A;
+    dt = options.dt;
+    spiketrain = options.spiketrain;
+    filter = options.filter;
+    modelType = options.modelType;
+    numFolds = options.numFolds;
+    n_bins = options.n_bins;
+    clear options
+
 
     %% Initialize matrices and section the data for k-fold cross-validation
 
