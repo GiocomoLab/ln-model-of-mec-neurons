@@ -75,6 +75,8 @@ methods (Static)
   [outputs] = unpackRoot(root, cel, varargin)
   [selected_model] = select_model(self, testFit)
   [filter] = get_filter(filter_name)
+  [tuning_curve] = compute_1d_tuning_curve(variable,fr,numBin,minVal,maxVal)
+  [tuning_curve] = compute_2d_tuning_curve(variable_x,variable_y,fr,numBin,minVal,maxVal)
 
 end % static methods
 
