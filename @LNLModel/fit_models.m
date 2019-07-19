@@ -80,6 +80,7 @@ function [testFit, trainFit, param] = fit_models(self)
   verbosity = self.verbosity;
   n_folds   = self.n_folds;
   n_bins    = [self.bins.position, self.bins.head_direction, self.bins.speed, self.bins.theta];
+  dt        = 1 / (self.sample_rate);
 
   for n = 1:self.n_models
       corelib.verb(self.verbosity, 'INFO', ['Fitting model ' num2str(n) ' of ' num2str(self.n_models)])
