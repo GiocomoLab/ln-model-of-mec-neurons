@@ -35,11 +35,7 @@ function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, 
 
   % spike times
   spktimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
-
-  if length(spktimes) < n_spikes
-    error('number of spikes and length of spike times don''t agree')
-  end
-
+  
   % shuffle the spikes
   if ~exist('n_spikes', 'var')
     n_spikes = length(spktimes);
