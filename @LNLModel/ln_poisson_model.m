@@ -1,4 +1,4 @@
-function [f, df, hessian] = ln_poisson_model(param,data,modelType)
+function [f, df, hessian] = ln_poisson_model(param, data, modelType, n_bins)
 
 X = data{1}; % subset of A
 Y = data{2}; % number of spikes
@@ -24,7 +24,7 @@ J_spd = 0; J_spd_g = []; J_spd_h = [];
 J_theta = 0; J_theta_g = []; J_theta_h = [];
 
 % find the parameters
-numPos = 400; numHD = 18; numSpd = 10; numTheta = 18; % hardcoded: number of parameters
+numPos = n_bins(1)^2; numHD = n_bins(2); numSpd = n_bins(3); numTheta = n_bins(4);
 [param_pos,param_hd,param_spd,param_theta] = find_param(param,modelType,numPos,numHD,numSpd,numTheta);
 
 % compute the contribution for f, df, and the hessian
