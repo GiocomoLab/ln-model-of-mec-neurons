@@ -18,7 +18,7 @@
 %   eeg_sample_rate   => sample rate of filt_eeg (250 Hz)
 %   sampleRate        => sampling rate of neural data and behavioral variable (50Hz)
 
-function [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
+function [boxSize, spiketrain, sheaddir, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
 
   root.cel = cel;
 
@@ -31,6 +31,9 @@ function [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, 
 
   % spike times
   spiketimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
+
+  % head direction
+  sheaddir    = root.sheaddir;
 
   % shuffle the spikes
   if ~exist('n_spikes', 'var')
