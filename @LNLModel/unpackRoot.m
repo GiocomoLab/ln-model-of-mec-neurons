@@ -22,7 +22,7 @@
 %   eeg_sample_rate   => sample rate of filt_eeg (250 Hz)
 %   sampleRate        => sampling rate of neural data and behavioral variable (50Hz)
 
-function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
+function [boxSize, spiketrain, post, posx_c, posy_c, filt_eeg, eeg_sample_rate, sample_rate] = unpackRoot(root, cel, n_spikes)
 
   root.cel = cel;
 
@@ -34,23 +34,22 @@ function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, 
   posy_c    = posy_c - min(posy_c);
 
   % spike times
-  spktimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
-  
+  spiketimes  = CMBHOME.Utils.ContinuizeEpochs(root.cel_ts);
+
   % shuffle the spikes
   if ~exist('n_spikes', 'var')
-    n_spikes = length(spktimes);
+    n_spikes = length(spiketimes);
   end
 
-  assert(n_spikes <= length(spktimes), 'too many spikes requested')
+  assert(n_spikes <= length(spiketimes), 'too many spikes requested')
 
-  if n_spikes < length(spktimes)
-    p = randperm(length(spktimes), n_spikes);
-    spktimes = sort(spktimes(p));
+  if n_spikes < length(spiketimes)
+    p = randperm(length(spiketimes), n_spikes);
+    spiketimes = sort(spiketimes(p));
   end
 
-  % get the spike train (125-ms Gaussian filter)
-  % [real_fr, ~] = get_InstFR(spktimes, post, root.fs_video, 'filter_length', 125, 'filter_type', 'Gauss');
-  [~,spiketrain] = get_InstFR(spktimes, post, root.fs_video, 'filter_length', 125, 'filter_type', 'Gauss');
+  % get the spike train without filtering, but with binning
+  spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
 
   % get the EEG recording
   boxSize = 100;
@@ -58,7 +57,7 @@ function [boxSize, post, spiketrain, postx, posx2, posx_c, posy, posy2, posy_c, 
   theta_freq_range = [6, 10];
 
   % get the theta-filtered EEG recording
-  root.active_lfp   = active_lfp;
+  root.active_lfp   = 1; % NOTE: this is some magic e-phys stuff I don't understand; just trust Holger
   eeg_4800          = root.b_lfp(root.active_lfp).signal;
   eeg_600           = resample(eeg_4800, 600, 4800);
   filt_eeg          = CMBHOME.LFP.BandpassFilter(eeg_600, eeg_sample_rate, theta_freq_range);
