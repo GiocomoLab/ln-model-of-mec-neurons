@@ -1,8 +1,9 @@
 classdef LNLModel
 
 properties
-
   % description of variables included:
+  bins = struct('position', 10, 'head_direction', 10, 'speed', 10, 'theta', 18)
+  max_speed = 50;   % cm/s, speeds above this value will be truncated to this value
   n_folds = 10      % the 'k' in k-fold cross-validation
   vars = 'PSTH';    % which variables to treat as the dependents?
   alpha = 0.05;     % the significance threshold for p-value tests
@@ -12,7 +13,6 @@ properties
 end % properties
 
 properties (SetAccess = protected)
-
   n_models = 15     % number of models
   box_size          % length (in cm) of one side of the square box
   spiketrain        % vector of the # of spikes in each 20 ms time bin
@@ -69,8 +69,8 @@ end % methods
 
 methods (Static)
 
-  [testFit,trainFit,param_mean] = fit_model(verbosity, A, dt, spiketrain, filter, modelType, numFolds)
-  [f, df, hessian] = ln_poisson_model(param,data,modelType)
+  [testFit,trainFit,param_mean] = fit_model(varargin)
+  [f, df, hessian] = ln_poisson_model(param, data, modelType, n_bins)
   [outputs] = unpackRoot(root, cel, varargin)
   [selected_model] = select_model(self, testFit)
 
