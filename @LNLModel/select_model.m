@@ -25,7 +25,7 @@
 
 % TODO: make this function respond to n dependent variables, rather than all
 
-function select_model(self, testFit)
+function selected_model = select_model(self, testFit)
 
   testFit_mat = cell2mat(testFit);
   LLH_values = reshape(testFit_mat(:, 3), self.n_folds, self.n_models);
