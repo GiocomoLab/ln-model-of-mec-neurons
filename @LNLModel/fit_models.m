@@ -27,7 +27,7 @@ function [testFit, trainFit, param] = fit_models(self, varargin)
   options.n_theta_bins  = 18;
   options.n_folds       = 10;
 
-  corelib.parseNameValueArguments(options, varargin{:});
+  options = corelib.parseNameValueArguments(options, varargin{:});
 
   % compute position matrix
   [posgrid, posVec]           = self.pos_map(options.n_pos_bins);
