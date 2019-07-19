@@ -1,4 +1,4 @@
-function [testFit,trainFit,param_mean] = fit_model(verbosity, A, dt, spiketrain, filter, modelType, numFolds)
+function [testFit,trainFit,param_mean] = fit_model(varargin)
 
     %% Description
     % This code will section the data into 10 different portions. Each portion
@@ -9,6 +9,25 @@ function [testFit,trainFit,param_mean] = fit_model(verbosity, A, dt, spiketrain,
     % mean-squared error, the log-likelihood increase, and the mean square
     % error will be computed for each test data set. In addition, the learned
     % parameters will be recorded for each section.
+
+    options = struct;
+
+    options.verbosity = true;
+    options.A = [];
+    options.dt = [];
+    options.spiketrain = [];
+    options.filter = [];
+    options.modelType = [];
+    options.numFolds = [];
+    options.n_bins = [20, 10, 10, 18];
+
+    options = corelib.parseNameValueArguments(options, varargin{:});
+
+    % options cannot be empty
+    option_names = fieldnames(options);
+    for ii = 1:length(option_names)
+        assert(~isempty(options.(option_names{ii})), [option_names{ii} ' cannot be empty'])
+    end
 
 
     %% Initialize matrices and section the data for k-fold cross-validation
@@ -53,7 +72,7 @@ function [testFit,trainFit,param_mean] = fit_model(verbosity, A, dt, spiketrain,
         else
             init_param = param;
         end
-        [param] = fminunc(@(param) LNLModel.ln_poisson_model(param,data,modelType),init_param,opts);
+        [param] = fminunc(@(param) LNLModel.ln_poisson_model(param,data,modelType, options.n_bins),init_param,opts);
 
         %%%%%%%%%%%%% TEST DATA %%%%%%%%%%%%%%%%%%%%%%%
         % compute the firing rate
