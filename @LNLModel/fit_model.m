@@ -29,6 +29,7 @@ function [testFit,trainFit,param_mean] = fit_model(varargin)
         assert(~isempty(options.(option_names{ii})), [option_names{ii} ' cannot be empty'])
     end
 
+    % unpacked variables
     verbosity = options.verbosity;
     A = options.A;
     dt = options.dt;
@@ -82,7 +83,7 @@ function [testFit,trainFit,param_mean] = fit_model(varargin)
         else
             init_param = param;
         end
-        [param] = fminunc(@(param) LNLModel.ln_poisson_model(param,data,modelType, options.n_bins),init_param,opts);
+        [param] = fminunc(@(param) LNLModel.ln_poisson_model(param,data,modelType, n_bins),init_param,opts);
 
         %%%%%%%%%%%%% TEST DATA %%%%%%%%%%%%%%%%%%%%%%%
         % compute the firing rate
