@@ -1,7 +1,7 @@
 function [Results] = run_LNmodel_root(root,active_lfp,cel)
 % runs the linear non-linear model (Hardcastle et al.) on CMBHOME root object loaded into the workspace
 
-addpath(genpath('D:\Dropbox (hasselmonians)\hdannenb\Scripts\LNmodel'))
+% addpath(genpath('D:\Dropbox (hasselmonians)\hdannenb\Scripts\LNmodel'))
 %% Description of linear non-linear model published by Hardcastle et al.
 % This script is segmented into several parts. First, the data (an
 % example cell) is loaded. Then, 15 LN models are fit to the

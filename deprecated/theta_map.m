@@ -15,7 +15,7 @@ phase_time = phase(phase_ind+1); %gives phase of lfp at every time point
 theta_grid = zeros(length(timeVec),nbins);
 phaseVec = 2*pi/nbins/2:2*pi/nbins:2*pi-2*pi/nbins/2;
 
-for i = 1:numel(timeVec)
+for i = 1:numel(timeVec)-1
     
     % figure out the theta index
     [~, idx] = min(abs(phase_time(i)-phaseVec));
