@@ -12,6 +12,7 @@ load('~/Downloads/180827_S1_lightVSdarkness.mat');
 
 % create the L-NL model object
 ln = LNLModel(root, [1, 1]);
+ln.n_folds = 2;
 
 % test all of the models
 [testFit, trainFit, param] = ln.fit_models();

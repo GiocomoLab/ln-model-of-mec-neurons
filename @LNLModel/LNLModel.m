@@ -2,7 +2,7 @@ classdef LNLModel
 
 properties
   % description of variables included:
-  bins = struct('position', 10, 'head_direction', 10, 'speed', 10, 'theta', 18)
+  bins = struct('position', 20, 'head_direction', 10, 'speed', 10, 'theta', 18)
   max_speed = 50;   % cm/s, speeds above this value will be truncated to this value
   n_folds = 10      % the 'k' in k-fold cross-validation
   vars = 'PSTH';    % which variables to treat as the dependents?
@@ -34,14 +34,29 @@ methods
     % constructor
     % Arguments:
     %   root: a root object created by CMBHOME
+    %     if it's not, assume it's a mat file and load it, and hope it works
     %   cel: a 1x2 vector containing the cell and tetrode indices
     %   varargin: name-value arguments into LNLModel.unpackRoot()
 
-    [outputs] = LNLModel.unpackRoot(root, cel, varargin{:});
-    output_list = fieldnames(outputs);
+    if exist('root', 'var') & strcmp(class(root), 'CMBHOME.Session')
+      [outputs] = LNLModel.unpackRoot(root, cel, varargin{:});
+      output_list = fieldnames(outputs);
 
-    for ii = 1:length(output_list)
-      self.(output_list{ii}) = outputs.(output_list{ii});
+      for ii = 1:length(output_list)
+        self.(output_list{ii}) = outputs.(output_list{ii});
+      end
+    else
+      % expect root to be the path to a mat file
+      data = load(root);
+      output_list = fieldnames(data);
+      for ii = 1:length(output_list)
+        if isprop(self, output_list{ii})
+          self.(output_list{ii}) = data.(output_list{ii});
+        end
+      end
+      self.sample_rate = data.sampleRate;
+      self.speed = data.sampleRate * (data.posx_c.^2 + data.posy_c.^2);
+      self.box_size = data.boxSize;
     end
   end % constructor
 

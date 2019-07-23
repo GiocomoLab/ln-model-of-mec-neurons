@@ -75,7 +75,7 @@ function [testFit,trainFit,param_mean] = fit_model(varargin)
         smooth_fr_train = smooth_spikes_train./dt;
         train_A = A(train_ind,:);
 
-        opts = optimset('Gradobj','on','Hessian','on','Display','off');
+        opts = optimset('Gradobj','on','Hessian','on','Display','on');
 
         data{1} = train_A; data{2} = train_spikes;
         if k == 1
@@ -83,7 +83,11 @@ function [testFit,trainFit,param_mean] = fit_model(varargin)
         else
             init_param = param;
         end
-        [param] = fminunc(@(param) LNLModel.ln_poisson_model(param,data,modelType, n_bins),init_param,opts);
+        try
+            [param] = fminunc(@(param) LNLModel.ln_poisson_model(param, data, modelType, n_bins), init_param, opts);
+        catch
+            keyboard
+        end
 
         %%%%%%%%%%%%% TEST DATA %%%%%%%%%%%%%%%%%%%%%%%
         % compute the firing rate
