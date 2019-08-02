@@ -23,7 +23,7 @@
 %   posy_c            => y-position in middle of LEDs
 %   filt_eeg          => local field potential, filtered for theta frequency (4-12 Hz)
 %   eeg_sample_rate   => sample rate of filt_eeg (250 Hz)
-%   sampleRate        => sampling rate of neural data and behavioral variable (50Hz)
+%   sample_rate       => sampling rate of neural data and behavioral variable (50Hz)
 
 function [outputs] = unpackRoot(root, cel, varargin)
   % options can be changed from defaults by calling the function with name-value arguments
@@ -57,7 +57,9 @@ function [outputs] = unpackRoot(root, cel, varargin)
   end
 
   % get the spike train without filtering, but with binning
-  outputs.spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
+  % outputs.spiketrain = BandwidthEstimator.getSpikeTrain(spiketimes, root.ts);
+  % get the spike train by filtering
+  [~, spiketrain] = LNLModel.get_InstFR(spiketimes, outputs.post, root.fs_video, 'filter_length', 125, 'filter_type', 'Gauss');
 
   % head direction
   outputs.sheaddir  = root.sheaddir;

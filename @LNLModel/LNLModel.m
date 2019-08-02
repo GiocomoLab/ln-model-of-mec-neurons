@@ -1,4 +1,4 @@
-classdef LNLModel
+classdef LNLModel < Hashable
 
 properties
   % description of variables included:
@@ -92,6 +92,7 @@ methods (Static)
   [filter] = get_filter(filter_name)
   [tuning_curve] = compute_1d_tuning_curve(variable,fr,numBin,minVal,maxVal)
   [tuning_curve] = compute_2d_tuning_curve(variable_x,variable_y,fr,numBin,minVal,maxVal)
+  [frFilt,spkTrain] = get_InstFR(spktimes, time, sampling_rate_of_time, varargin)
 
 end % static methods
 

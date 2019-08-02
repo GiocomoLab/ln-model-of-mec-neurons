@@ -74,7 +74,7 @@ function [testFit, trainFit, param] = fit_models(self)
   % dt = post(3)-post(2); fr = spiketrain/dt;
   % smooth_fr = conv(fr,filter,'same');
 
-
+  keyboard
   % parameters that need to be accessible by multiple workers
   filter    = LNLModel.get_filter('hardcastle');
   verbosity = self.verbosity;
