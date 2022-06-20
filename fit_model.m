@@ -74,7 +74,7 @@ for k = 1:numFolds
     log_llh_test_model = nansum(r-n.*log(r)+log(factorial(n)))/sum(n); %note: log(gamma(n+1)) will be unstable if n is large (which it isn't here)
     log_llh_test_mean = nansum(meanFR_test-n.*log(meanFR_test)+log(factorial(n)))/sum(n);
     log_llh_test = (-log_llh_test_model + log_llh_test_mean);
-    log_llh_test = log(2)*log_llh_test;
+    log_llh_test = log_llh_test/log(2); # convert from nats to bits
     
     % compute MSE
     mse_test = nanmean((smooth_fr_hat_test-smooth_fr_test).^2);
@@ -100,7 +100,7 @@ for k = 1:numFolds
     log_llh_train_model = nansum(r_train-n_train.*log(r_train)+log(factorial(n_train)))/sum(n_train);
     log_llh_train_mean = nansum(meanFR_train-n_train.*log(meanFR_train)+log(factorial(n_train)))/sum(n_train);
     log_llh_train = (-log_llh_train_model + log_llh_train_mean);
-    log_llh_train = log(2)*log_llh_train;
+    log_llh_train = log_llh_train/log(2); # convert from nats to bits
     
     % compute MSE
     mse_train = nanmean((smooth_fr_hat_train-smooth_fr_train).^2);
